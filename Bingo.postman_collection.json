@@ -1,0 +1,108 @@
+{
+	"info": {
+		"name": "Bingo",
+		"_postman_id": "d4943039-196d-b235-8d02-f7b9dffe9980",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Exercise By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:51723/api/exercises/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "51723",
+					"path": [
+						"api",
+						"exercises",
+						"1"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Exercises",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:51723/api/exercises",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "51723",
+					"path": [
+						"api",
+						"exercises"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Post Exercise",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"name\": \"Overhead Press\"\r\n    \"shortName\": \"Press\",\r\n    \"longName\": \"Barbell Overhead Press\",\r\n    \"activations\":\r\n    [\r\n        {\r\n            \"refId\": \"6\",\r\n            \"value\": \"74.13\"\r\n        },\r\n        {\r\n            \"refId\": \"22\",\r\n            \"value\": \"78.31\"\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:51723/api/exercises",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "51723",
+					"path": [
+						"api",
+						"exercises"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Exercise",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:51723/api/exercises/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "51723",
+					"path": [
+						"api",
+						"exercises",
+						"4"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
