@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="TestData\**" />
+    <EmbeddedResource Remove="TestData\**" />
+    <None Remove="TestData\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170628-02" />
     <PackageReference Include="Moq" Version="4.7.145" />
     <PackageReference Include="Shouldly" Version="2.8.3" />
@@ -17,10 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Bingo.Api\Bingo.Api.csproj" />
     <ProjectReference Include="..\..\src\Bingo.Services\Bingo.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="TestData\Entities\" />
   </ItemGroup>
 
 </Project>
