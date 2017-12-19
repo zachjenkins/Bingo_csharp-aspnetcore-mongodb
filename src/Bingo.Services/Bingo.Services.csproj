@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bingo.Domain\Bingo.Domain.csproj" />
     <ProjectReference Include="..\Bingo.Repository\Bingo.Repository.csproj" />
   </ItemGroup>
 

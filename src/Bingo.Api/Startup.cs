@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Configuration;
+using System;
+using System.Configuration.Assemblies;
+using Microsoft.Extensions.Configuration;
 
 namespace Bingo.Api
 {
@@ -29,6 +33,8 @@ namespace Bingo.Api
                 settings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
                 return settings;
             });
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

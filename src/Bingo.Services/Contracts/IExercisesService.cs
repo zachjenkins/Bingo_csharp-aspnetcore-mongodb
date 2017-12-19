@@ -1,13 +1,14 @@
 ﻿using Bingo.Domain.Entities;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Bingo.Services.Contracts
 {
     public interface IExercisesService
     {
-        Exercise FindExerciseById(string id);
-        IEnumerable<Exercise> FindAllExercises();
-        Exercise CreateExercise(Exercise exerciseToCreate);
-        bool RemoveExercise(string id);
+        Task<Exercise> FindExerciseById(string id);
+        Task<IEnumerable<Exercise>> FindAllExercises();
+        Task<Exercise> CreateExercise(Exercise exerciseToCreate);
+        Task<bool> RemoveExercise(string id);
     }
 }

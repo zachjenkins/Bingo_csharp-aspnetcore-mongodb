@@ -2,6 +2,7 @@
 using Bingo.Repository.Contracts;
 using Bingo.Services.Contracts;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Bingo.Services.Services
 {
@@ -14,26 +15,26 @@ namespace Bingo.Services.Services
             _exercisesRepository = exercisesRepository;
         }
 
-        public Exercise FindExerciseById(string id)
+        public async Task<Exercise> FindExerciseById(string id)
         {
-            return _exercisesRepository.SelectExerciseById(id);
+            return await _exercisesRepository.SelectExerciseById(id);
         }
 
-        public IEnumerable<Exercise> FindAllExercises()
+        public async Task<IEnumerable<Exercise>> FindAllExercises()
         {
-            return _exercisesRepository.SelectAllExercises();
+            return await _exercisesRepository.SelectAllExercises();
         }
 
-        public Exercise CreateExercise(Exercise exerciseToCreate)
+        public async Task<Exercise> CreateExercise(Exercise exerciseToCreate)
         {
-            var createdExercise = _exercisesRepository.InsertExercise(exerciseToCreate);
+            var createdExercise = await _exercisesRepository.InsertExercise(exerciseToCreate);
 
             return createdExercise;
         }
 
-        public bool RemoveExercise(string id)
+        public async Task<bool> RemoveExercise(string id)
         {
-            return _exercisesRepository.DeleteExercise(id);
+            return await _exercisesRepository.DeleteExercise(id);
         }
     }
 }

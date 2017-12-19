@@ -1,4 +1,5 @@
-﻿using Bingo.Api.Controllers;
+﻿using System.Threading.Tasks;
+using Bingo.Api.Controllers;
 using Bingo.Domain.Entities;
 using Bingo.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,7 @@ namespace Bingo.Specification.ControllerTests
         public void Returns200_WhenServicesReturnsExerciseObject()
         {
             //Arrange
-            _mockService.Setup(x => x.FindExerciseById(It.IsAny<string>())).Returns(_exercise);
+            _mockService.Setup(x => x.FindExerciseById(It.IsAny<string>())).ReturnsAsync(_exercise);
 
             // Act
             var response = _controller.GetExerciseById("InvalidId");
@@ -58,10 +59,10 @@ namespace Bingo.Specification.ControllerTests
         public void ReturnsExerciseObject_WhenServiceReturnsExerciseObject()
         {
             //Arrange
-            _mockService.Setup(x => x.FindExerciseById(It.IsAny<string>())).Returns(_exercise);
+            _mockService.Setup(x => x.FindExerciseById(It.IsAny<string>())).ReturnsAsync(_exercise);
 
             // Act
-            var response = _controller.GetExerciseById("ValidId") as ObjectResult;
+            var response = _controller.GetExerciseById("ValidId").Result as ObjectResult;
             var returnedObject = response.Value;
 
             // Assert
@@ -75,7 +76,7 @@ namespace Bingo.Specification.ControllerTests
             _mockService.Setup(x => x.FindExerciseById(It.IsAny<string>())).Returns<object>(null);
 
             // Act
-            var response = _controller.GetExerciseById("InvalidId") as ObjectResult;
+            var response = _controller.GetExerciseById("InvalidId").Result as ObjectResult;
 
             // Assert
             response.ShouldBeNull();

@@ -1,77 +1,66 @@
 ﻿using Bingo.Domain.Entities;
 using Bingo.Repository.Contracts;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Bingo.Repository.Repositories
 {
     public class ExercisesRepository : IExercisesRepository
     {
-        // This is all going to change so we're just gonna store the data in-memory until I get mongo up and going.
-     
-        public Exercise SelectExerciseById(string id)
+        private readonly IMongoClient _client;
+        private readonly IMongoDatabase _database;
+        private readonly IMongoCollection<Exercise> _collection;
+
+        public ExercisesRepository()
         {
-            return _data.FirstOrDefault(exercise => exercise.Id == id);
+            _client = new MongoClient(@"mongodb://localhost:27017?connectionTimeout=30000");
+            _database = _client.GetDatabase("bingo");
+            _collection = _database.GetCollection<Exercise>("exercises");
         }
 
-        public IEnumerable<Exercise> SelectAllExercises()
+        public async Task<Exercise> SelectExerciseById(string id)
         {
-            return _data;
+            try
+            {
+                var filter = Builders<Exercise>.Filter.Eq(ex => ex.Id, id);
+                var result = await _collection.FindAsync(filter);
+                return result.FirstOrDefault();
+            }
+            catch (MongoWriteException e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<Exercise>> SelectAllExercises()
+        {
+            var filter = Builders<Exercise>.Filter.Empty;
+            var results = await _collection.FindAsync(filter);
+            return results.ToEnumerable();
         }
 
         // Be aware that this is not close the the actual mongo implementation
-        public Exercise InsertExercise(Exercise exercise)
+        public async Task<Exercise> InsertExercise(Exercise exercise)
         {
-            exercise.Id = (_data.Count + 1).ToString();
-
-            _data.Add(exercise);
-
+            await _collection.InsertOneAsync(exercise);
             return exercise;
         }
 
-        public bool DeleteExercise(string id)
+        public async Task<bool> DeleteExercise(string id)
         {
-            return (_data.RemoveAll(ex => ex.Id == id) > 0);
-        }
-
-        private static readonly List<Exercise> _data = new List<Exercise>
-        {
-            new Exercise
+            try
             {
-                Id = "1",
-                Name = "Bench Press",
-                ShortName = "Bench",
-                LongName = "Flat Barbell Bench Press",
-                Activations = new List<Activation>
-                {
-                    new Activation
-                    {
-                        Type = ActivationType.Group,
-                        RefId = 1,
-                        Value = 74.13
-                    },
-                    new Activation
-                    {
-                        Type = ActivationType.Muscle,
-                        RefId = 2,
-                        Value = 78.31
-                    }
-                }
-            },
-            new Exercise
-            {
-                Id = "2",
-                Name = "Barbell Squat",
-                ShortName = "Squat",
-                LongName = "Barbell Back Squat"
-            },
-            new Exercise
-            {
-                Id = "3",
-                Name = "Barbell Deadlift",
-                ShortName = "Deadlift",
-                LongName = "Conventional Barbell Deadlift"
+                var filter = Builders<Exercise>.Filter.Eq(ex => ex.Id, id);
+                var result = await _collection.DeleteOneAsync(filter);
+                return (result.DeletedCount > 0) ? true : false;
             }
-        };
+            catch (FormatException e)
+            {
+                return true;
+            }
+        }
     }
 }

@@ -19,8 +19,6 @@ namespace Bingo.Api.Models
         [MaxLength(60)]
         public string LongName { get; set; }
 
-        public ICollection<Activation> Activations { get; set; }
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             // Model Business logic must go here!
@@ -38,7 +36,6 @@ namespace Bingo.Api.Models
                 Name = this.Name,
                 ShortName = this.ShortName,
                 LongName = this.LongName,
-                Activations = this.Activations
             };
         }
     }

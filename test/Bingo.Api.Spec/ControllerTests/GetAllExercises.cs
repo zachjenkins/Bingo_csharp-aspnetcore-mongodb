@@ -41,7 +41,7 @@ namespace Bingo.Specification.ControllerTests
         public void Returns200_WhenServiceReturnsListOfExerciseObjects()
         {
             //Arrange
-            _mockService.Setup(x => x.FindAllExercises()).Returns(_exercises);
+            _mockService.Setup(x => x.FindAllExercises()).ReturnsAsync(_exercises);
 
             // Act
             var response = _controller.GetAllExercises();
@@ -67,10 +67,10 @@ namespace Bingo.Specification.ControllerTests
         public void ReturnsListOfExerciseObjects_WhenServiceReturnsListExerciseObjects()
         {
             //Arrange
-            _mockService.Setup(x => x.FindAllExercises()).Returns(_exercises);
+            _mockService.Setup(x => x.FindAllExercises()).ReturnsAsync(_exercises);
 
             // Act
-            var response = _controller.GetAllExercises() as ObjectResult;
+            var response = _controller.GetAllExercises().Result as ObjectResult;
 
             // Assert
             response.Value.ShouldBe(_exercises);
@@ -83,7 +83,7 @@ namespace Bingo.Specification.ControllerTests
             _mockService.Setup(x => x.FindAllExercises()).Returns<object>(null);
 
             // Act
-            var response = _controller.GetAllExercises() as ObjectResult;
+            var response = _controller.GetAllExercises().Result as ObjectResult;
             var returnedExercises = response.Value as List<Exercise>;
 
             // Assert

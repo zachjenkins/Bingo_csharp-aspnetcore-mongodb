@@ -40,13 +40,13 @@ namespace Bingo.Specification.ServicesTests
         public void ReturnsExerciseObject_WhenRepositoryReturnsExerciseObject()
         {
             // Arrange
-            _mockRepository.Setup(x => x.SelectAllExercises()).Returns(_exercises);
+            _mockRepository.Setup(x => x.SelectAllExercises()).ReturnsAsync(_exercises);
 
             //Act
-            var result = _service.FindAllExercises();
+            var response = _service.FindAllExercises();
 
             //Assert
-            result.ShouldBe(_exercises);
+            response.Result.ShouldBe(_exercises);
         }
 
         [Fact(DisplayName = "Returns null value when repository returns null value")]
@@ -56,10 +56,10 @@ namespace Bingo.Specification.ServicesTests
             _mockRepository.Setup(x => x.SelectAllExercises()).Returns<object>(null);
 
             //Act
-            var result = _service.FindAllExercises();
+            var response = _service.FindAllExercises();
 
             //Assert
-            result.ShouldBeNull();
+            response.ShouldBeNull();
         }
     }
 }

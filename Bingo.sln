@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{AB4C038A-D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bingo.Specification", "test\Bingo.Api.Spec\Bingo.Specification.csproj", "{15D4D864-EDF8-4CF2-893A-8C1F4AF9D097}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bingo.Domain", "src\Bingo.Domain\Bingo.Domain.csproj", "{0B284A47-D51B-414F-80A9-BB01350D2AA5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,10 +37,6 @@ Global
 		{15D4D864-EDF8-4CF2-893A-8C1F4AF9D097}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15D4D864-EDF8-4CF2-893A-8C1F4AF9D097}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15D4D864-EDF8-4CF2-893A-8C1F4AF9D097}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0B284A47-D51B-414F-80A9-BB01350D2AA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B284A47-D51B-414F-80A9-BB01350D2AA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0B284A47-D51B-414F-80A9-BB01350D2AA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0B284A47-D51B-414F-80A9-BB01350D2AA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,7 +46,6 @@ Global
 		{85CA5DA0-2C6E-42D3-95D7-8927716E2A36} = {0759C972-472B-4A8E-BD77-2BF788101C61}
 		{828510BA-FDCD-4D2A-90C2-A7E39A5EB377} = {0759C972-472B-4A8E-BD77-2BF788101C61}
 		{15D4D864-EDF8-4CF2-893A-8C1F4AF9D097} = {AB4C038A-DD3A-4CA1-90D0-3679C65A2A8C}
-		{0B284A47-D51B-414F-80A9-BB01350D2AA5} = {0759C972-472B-4A8E-BD77-2BF788101C61}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA89C7B1-490D-4AA0-9C67-AD78EB37769A}
