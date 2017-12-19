@@ -13,12 +13,12 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:65315/api/exercises/5a37c78f977cd7e92241b9b9",
+					"raw": "http://localhost:61088/api/exercises/5a37c78f977cd7e92241b9b9",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "65315",
+					"port": "61088",
 					"path": [
 						"api",
 						"exercises",
@@ -66,12 +66,12 @@
 					"raw": "{\r\n\t\"name\": \"Overhead Press\",\r\n    \"shortName\": \"Press\",\r\n    \"longName\": \"Barbell Overhead Press\"\r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:65315/api/exercises",
+					"raw": "http://localhost:61088/api/exercises",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "65315",
+					"port": "61088",
 					"path": [
 						"api",
 						"exercises"

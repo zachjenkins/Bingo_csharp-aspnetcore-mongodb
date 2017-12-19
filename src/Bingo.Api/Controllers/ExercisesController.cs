@@ -1,11 +1,10 @@
-﻿using Bingo.Domain.Entities;
+﻿using Bingo.Api.Models;
+using Bingo.Repository.Entities;
 using Bingo.Services.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using Bingo.Api.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace Bingo.Api.Controllers
 {
@@ -52,6 +51,9 @@ namespace Bingo.Api.Controllers
                 return BadRequest(ModelState.Values);
 
             var postedExercise = await _exercisesService.CreateExercise(exerciseDto.ToExercise());
+
+            if (postedExercise == null)
+                return BadRequest();
 
             return StatusCode(201, postedExercise);
         }

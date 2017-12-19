@@ -1,5 +1,5 @@
 ﻿using Bingo.Api.Controllers;
-using Bingo.Domain.Entities;
+using Bingo.Repository.Entities;
 using Bingo.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -12,75 +12,33 @@ namespace Bingo.Specification.ControllerTests
     [Trait("Controller", "Getting all exercises")]
     public class GetAllExercises
     {
-        private readonly Mock<IExercisesService> _mockService;
-        private readonly ExercisesController _controller;
-        private readonly List<Exercise> _exercises;
+        private static readonly Mock<IExercisesService> MockService = new Mock<IExercisesService>();
+        private readonly ExercisesController _controller = new ExercisesController(MockService.Object);
 
-        public GetAllExercises()
-        {
-            _mockService = new Mock<IExercisesService>();
-            
-            _controller = new ExercisesController(_mockService.Object);
+        private readonly IEnumerable<Exercise> _exercises = TestData.Exercises.ContractExercises;
+        private readonly IEnumerable<Exercise> _nullResponse = null;
 
-            _exercises = new List<Exercise>
-            {
-                new Exercise
-                {
-                    Id = "129232",
-                    LongName = "This is an exercise"
-                },
-                new Exercise
-                {
-                    Id = "1293232",
-                    LongName = "This is an exercise too!"
-                }
-            };
-        }
-
-        [Fact(DisplayName = "Returns a 200 response code when service returns a list of exercise objects")]
+        [Fact(DisplayName = "Returns a 200 with expected exercises when service returns a list of exercise objects")]
         public void Returns200_WhenServiceReturnsListOfExerciseObjects()
         {
             //Arrange
-            _mockService.Setup(x => x.FindAllExercises()).ReturnsAsync(_exercises);
-
-            // Act
-            var response = _controller.GetAllExercises();
-
-            // Assert
-            response.ShouldBeOfType(typeof(OkObjectResult));
-        }
-
-        [Fact(DisplayName = "Returns a 200 response code when service returns a null value")]
-        public void Returns200_WhenServicesReturnsNullObject()
-        {
-            //Arrange
-            _mockService.Setup(x => x.FindAllExercises()).Returns<object>(null);
-
-            // Act
-            var response = _controller.GetAllExercises();
-
-            // Assert
-            response.ShouldBeOfType(typeof(OkObjectResult));
-        }
-
-        [Fact(DisplayName = "Returns a list of exercise objects when service returns a list of exercise objects")]
-        public void ReturnsListOfExerciseObjects_WhenServiceReturnsListExerciseObjects()
-        {
-            //Arrange
-            _mockService.Setup(x => x.FindAllExercises()).ReturnsAsync(_exercises);
+            MockService.Setup(x => x.FindAllExercises()).ReturnsAsync(_exercises);
 
             // Act
             var response = _controller.GetAllExercises().Result as ObjectResult;
 
             // Assert
-            response.Value.ShouldBe(_exercises);
+            this.ShouldSatisfyAllConditions(
+                    () => response.ShouldBeOfType(typeof(OkObjectResult)),
+                    () => response.Value.ShouldBe(_exercises)
+                );
         }
 
-        [Fact(DisplayName = "Returns an empty list when service returns a null value")]
-        public void ReturnsEmptyList_WhenServiceReturnsNullValue()
+        [Fact(DisplayName = "Returns a 200 with empty list when service returns a null value")]
+        public void Returns200_WhenServicesReturnsNullObject()
         {
             //Arrange
-            _mockService.Setup(x => x.FindAllExercises()).Returns<object>(null);
+            MockService.Setup(x => x.FindAllExercises()).ReturnsAsync(_nullResponse);
 
             // Act
             var response = _controller.GetAllExercises().Result as ObjectResult;
@@ -88,9 +46,11 @@ namespace Bingo.Specification.ControllerTests
 
             // Assert
             this.ShouldSatisfyAllConditions(
-                    () => returnedExercises.Count.ShouldBe(0),
-                    () => response.Value.ShouldBeOfType(typeof(List<Exercise>))
-                );
+                () => returnedExercises.Count.ShouldBe(0),
+                () => response.Value.ShouldBeOfType(typeof(List<Exercise>)),
+                () => response.ShouldBeOfType(typeof(OkObjectResult))
+            );
+            
         }
     }
 }

@@ -21,3 +21,9 @@ bingoDb.exercises.save([
             "LongName": "Conventional Barbell Deadlift"
         }
     ]);
+
+bingoDb.exercises.createIndex({ 'Name': 1 }, {
+        name: "Index_Unique_Name",
+        collation: { locale: "en", strength: 2 },
+        unique: true
+    });

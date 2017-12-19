@@ -1,24 +1,20 @@
-﻿using Bingo.Domain.Entities;
-using Bingo.Repository.Contracts;
+﻿using Bingo.Repository.Contracts;
+using Bingo.Repository.Entities;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bingo.Repository.Repositories
 {
     public class ExercisesRepository : IExercisesRepository
     {
-        private readonly IMongoClient _client;
-        private readonly IMongoDatabase _database;
         private readonly IMongoCollection<Exercise> _collection;
 
         public ExercisesRepository()
         {
-            _client = new MongoClient(@"mongodb://localhost:27017?connectionTimeout=30000");
-            _database = _client.GetDatabase("bingo");
-            _collection = _database.GetCollection<Exercise>("exercises");
+            IMongoClient client = new MongoClient(@"mongodb://localhost:27017?connectionTimeout=30000");
+            var database = client.GetDatabase("bingo");
+            _collection = database.GetCollection<Exercise>("exercises");
         }
 
         public async Task<Exercise> SelectExerciseById(string id)
@@ -29,7 +25,7 @@ namespace Bingo.Repository.Repositories
                 var result = await _collection.FindAsync(filter);
                 return result.FirstOrDefault();
             }
-            catch (MongoWriteException e)
+            catch
             {
                 return null;
             }
@@ -45,8 +41,17 @@ namespace Bingo.Repository.Repositories
         // Be aware that this is not close the the actual mongo implementation
         public async Task<Exercise> InsertExercise(Exercise exercise)
         {
-            await _collection.InsertOneAsync(exercise);
-            return exercise;
+            try
+            {
+                await _collection.InsertOneAsync(exercise);
+
+                return (exercise.Id == null) ? null : exercise;
+            }
+            catch
+            {
+                return null;
+            }
+            
         }
 
         public async Task<bool> DeleteExercise(string id)
@@ -55,9 +60,9 @@ namespace Bingo.Repository.Repositories
             {
                 var filter = Builders<Exercise>.Filter.Eq(ex => ex.Id, id);
                 var result = await _collection.DeleteOneAsync(filter);
-                return (result.DeletedCount > 0) ? true : false;
+                return (result.DeletedCount > 0);
             }
-            catch (FormatException e)
+            catch
             {
                 return true;
             }

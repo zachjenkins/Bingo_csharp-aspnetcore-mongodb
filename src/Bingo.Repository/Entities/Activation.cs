@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Bingo.Domain.Entities
+﻿namespace Bingo.Repository.Entities
 {
     public class Activation
     {

@@ -1,10 +1,6 @@
-﻿using System;
+﻿using Bingo.Repository.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using Bingo.Domain.Entities;
-using Microsoft.AspNetCore;
-using System.Threading.Tasks;
 
 namespace Bingo.Api.Models
 {
@@ -22,20 +18,16 @@ namespace Bingo.Api.Models
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             // Model Business logic must go here!
-
-            var result = new List<ValidationResult>();
-
-
-            return result;
+            return new List<ValidationResult>();
         }
         
         public Exercise ToExercise()
         {
             return new Exercise
             {
-                Name = this.Name,
-                ShortName = this.ShortName,
-                LongName = this.LongName,
+                Name = Name,
+                ShortName = ShortName,
+                LongName = LongName,
             };
         }
     }

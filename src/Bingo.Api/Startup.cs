@@ -7,10 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Configuration;
-using System;
-using System.Configuration.Assemblies;
-using Microsoft.Extensions.Configuration;
 
 namespace Bingo.Api
 {

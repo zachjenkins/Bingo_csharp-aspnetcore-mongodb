@@ -1,4 +1,4 @@
-﻿using Bingo.Domain.Entities;
+﻿using Bingo.Repository.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
