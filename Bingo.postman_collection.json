@@ -13,16 +13,16 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:51723/api/exercises/1",
+					"raw": "http://localhost:65315/api/exercises/5a37c78f977cd7e92241b9b9",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "51723",
+					"port": "65315",
 					"path": [
 						"api",
 						"exercises",
-						"1"
+						"5a37c78f977cd7e92241b9b9"
 					]
 				},
 				"description": ""
@@ -36,12 +36,12 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:51723/api/exercises",
+					"raw": "http://localhost:65315/api/exercises",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "51723",
+					"port": "65315",
 					"path": [
 						"api",
 						"exercises"
@@ -63,15 +63,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t\"name\": \"Overhead Press\"\r\n    \"shortName\": \"Press\",\r\n    \"longName\": \"Barbell Overhead Press\",\r\n    \"activations\":\r\n    [\r\n        {\r\n            \"refId\": \"6\",\r\n            \"value\": \"74.13\"\r\n        },\r\n        {\r\n            \"refId\": \"22\",\r\n            \"value\": \"78.31\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n\t\"name\": \"Overhead Press\",\r\n    \"shortName\": \"Press\",\r\n    \"longName\": \"Barbell Overhead Press\"\r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:51723/api/exercises",
+					"raw": "http://localhost:65315/api/exercises",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "51723",
+					"port": "65315",
 					"path": [
 						"api",
 						"exercises"
@@ -88,12 +88,12 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:51723/api/exercises/4",
+					"raw": "http://localhost:65315/api/exercises/4",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "51723",
+					"port": "65315",
 					"path": [
 						"api",
 						"exercises",
