@@ -10,14 +10,16 @@ namespace Bingo.Repository.Repositories
     {
         private readonly IMongoCollection<Exercise> _collection;
 
-        public ExercisesRepository()
+        public ExercisesRepository()//IMongoCollection<Exercise> collection)
         {
+            //_collection = collection;
+
             IMongoClient client = new MongoClient(@"mongodb://localhost:27017?connectionTimeout=30000");
             var database = client.GetDatabase("bingo");
             _collection = database.GetCollection<Exercise>("exercises");
         }
 
-        public async Task<Exercise> SelectExerciseById(string id)
+        public async Task<Exercise> ReadOneAsync(string id)
         {
             try
             {
@@ -31,15 +33,14 @@ namespace Bingo.Repository.Repositories
             }
         }
 
-        public async Task<IEnumerable<Exercise>> SelectAllExercises()
+        public async Task<IEnumerable<Exercise>> ReadAllAsync()
         {
             var filter = Builders<Exercise>.Filter.Empty;
             var results = await _collection.FindAsync(filter);
             return results.ToEnumerable();
         }
-
-        // Be aware that this is not close the the actual mongo implementation
-        public async Task<Exercise> InsertExercise(Exercise exercise)
+        
+        public async Task<Exercise> CreateOneAsync(Exercise exercise)
         {
             try
             {
@@ -54,18 +55,17 @@ namespace Bingo.Repository.Repositories
             
         }
 
-        public async Task<bool> DeleteExercise(string id)
+        public async Task<Exercise> DeleteOneAsync(string id)
         {
-            try
-            {
-                var filter = Builders<Exercise>.Filter.Eq(ex => ex.Id, id);
-                var result = await _collection.DeleteOneAsync(filter);
-                return (result.DeletedCount > 0);
-            }
-            catch
-            {
-                return true;
-            }
+            var exerciseToDelete = await ReadOneAsync(id);
+
+            if (exerciseToDelete == null)
+                return null;
+
+            var filter = Builders<Exercise>.Filter.Eq(ex => ex.Id, id);
+            await _collection.DeleteOneAsync(filter);
+
+            return exerciseToDelete;
         }
     }
 }

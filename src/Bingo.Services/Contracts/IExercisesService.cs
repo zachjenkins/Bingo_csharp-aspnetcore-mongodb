@@ -6,9 +6,9 @@ namespace Bingo.Services.Contracts
 {
     public interface IExercisesService
     {
-        Task<Exercise> FindExerciseById(string id);
-        Task<IEnumerable<Exercise>> FindAllExercises();
-        Task<Exercise> CreateExercise(Exercise exerciseToCreate);
-        Task<bool> RemoveExercise(string id);
+        Task<Exercise> ReadOneAsync(string id);
+        Task<IEnumerable<Exercise>> ReadAllAsync();
+        Task<Exercise> CreateOneAsync(Exercise exerciseToCreate);
+        Task<Exercise> DeleteOneAsync(string id);
     }
 }

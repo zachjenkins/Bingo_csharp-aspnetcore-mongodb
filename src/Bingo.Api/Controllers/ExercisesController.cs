@@ -1,9 +1,8 @@
 ﻿using Bingo.Api.Models;
-using Bingo.Repository.Entities;
 using Bingo.Services.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 
 namespace Bingo.Api.Controllers
@@ -15,27 +14,24 @@ namespace Bingo.Api.Controllers
 
         public ExercisesController(IExercisesService exercisesService)
         {
-            _exercisesService = exercisesService;
+            _exercisesService = exercisesService ?? throw new ArgumentNullException(nameof(exercisesService));
         }
 
         [HttpGet(Name = "Get All Exercises")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllExercises()
+        public async Task<IActionResult> ReadAllAsync()
         {
-            var exercises = await _exercisesService.FindAllExercises();
+            var allExercises = await _exercisesService.ReadAllAsync();
 
-            if (exercises == null)
-                return Ok(new List<Exercise>());
-
-            return Ok(exercises);
+            return Ok(allExercises);
         }
        
         [HttpGet("{id}", Name = "Get Exercise by Id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetExerciseById(string id)
+        public async Task<IActionResult> ReadOneAsync(string id)
         {
-            var exercise = await _exercisesService.FindExerciseById(id);
+            var exercise = await _exercisesService.ReadOneAsync(id);
             
             if (exercise == null)
                 return NotFound();
@@ -45,12 +41,12 @@ namespace Bingo.Api.Controllers
 
         [HttpPost(Name = "Post Exercise")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> PostExercise([FromBody] PostExerciseDto exerciseDto)
+        public async Task<IActionResult> CreateOneAsync([FromBody] PostExerciseDto exerciseDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.Values);
 
-            var postedExercise = await _exercisesService.CreateExercise(exerciseDto.ToExercise());
+            var postedExercise = await _exercisesService.CreateOneAsync(exerciseDto.ToExercise());
 
             if (postedExercise == null)
                 return BadRequest();
@@ -61,14 +57,11 @@ namespace Bingo.Api.Controllers
         [HttpDelete("{id}", Name = "Delete Exercise")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteExercise(string id)
+        public async Task<IActionResult> DeleteOneAsync(string id)
         {
-            var result = await _exercisesService.RemoveExercise(id);
-
-            if (result)
-                return NoContent();
-
-            return NotFound();
+            await _exercisesService.DeleteOneAsync(id);
+            
+            return NoContent();
         }
     }
 }

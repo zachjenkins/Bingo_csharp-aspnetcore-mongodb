@@ -15,28 +15,28 @@ namespace Bingo.Services.Services
             _exercisesRepository = exercisesRepository;
         }
 
-        public async Task<Exercise> FindExerciseById(string id)
+        public async Task<Exercise> ReadOneAsync(string id)
         {
-            var result = await _exercisesRepository.SelectExerciseById(id);
+            var result = await _exercisesRepository.ReadOneAsync(id);
             return result;
         }
 
-        public async Task<IEnumerable<Exercise>> FindAllExercises()
+        public async Task<IEnumerable<Exercise>> ReadAllAsync()
         {
-            var results = await _exercisesRepository.SelectAllExercises();
+            var results = await _exercisesRepository.ReadAllAsync();
             return results;
         }
 
-        public async Task<Exercise> CreateExercise(Exercise exerciseToCreate)
+        public async Task<Exercise> CreateOneAsync(Exercise exerciseToCreate)
         {
-            var createdExercise = await _exercisesRepository.InsertExercise(exerciseToCreate);
+            var createdExercise = await _exercisesRepository.CreateOneAsync(exerciseToCreate);
             
             return createdExercise;
         }
 
-        public async Task<bool> RemoveExercise(string id)
+        public async Task<Exercise> DeleteOneAsync(string id)
         {
-            return await _exercisesRepository.DeleteExercise(id);
+            return await _exercisesRepository.DeleteOneAsync(id);
         }
     }
 }
