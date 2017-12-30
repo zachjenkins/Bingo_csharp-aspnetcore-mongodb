@@ -7,16 +7,10 @@ using Xunit;
 
 namespace Bingo.Specification.ModelTests
 {
-    public class ExercisesPostDtoTests
+    public class ExerciseDtoTests
     {
-
-    }
-
-    public class ExerciseDtoValidation : ExercisesPostDtoTests
-    {
-
         [Fact]
-        public void Should_Return_No_Errors_When_Model_Is_Valid()
+        public void ExercisePostDtoValidation_ReturnsNoErrors_WhenModelStateIsValid()
         {
             // Arrange
             var postDto = TestData.Exercises.ContractExercisePostDto;
@@ -28,11 +22,25 @@ namespace Bingo.Specification.ModelTests
             Assert.True(isValid);
         }
 
+        [Fact]
+        public void ExercisePostDtoValidation_ReturnsNoErrors_WhenValidateMethodIsCalledWithValidObject()
+        {
+            // Arrange
+            var postDto = TestData.Exercises.ContractExercisePostDto;
+            var context = new ValidationContext(postDto);
+
+            // Act
+            var results = postDto.Validate(context);
+
+            // Assert
+            Assert.Empty(results);
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("  ")]
-        public void Should_Require_Name_Field_Without_Null_Or_Whitespace(string name)
+        public void ExercisePostDtoValidation_RequiresName_WhenNameIsNullOrWhitespace(string name)
         {
             // Arrange
             var postDto = new PostExerciseDto
@@ -40,7 +48,7 @@ namespace Bingo.Specification.ModelTests
                 Name = name
             };
             var property = nameof(postDto.Name);
-            var context = new ValidationContext(postDto) { MemberName = property};
+            var context = new ValidationContext(postDto) {MemberName = property};
             var results = new List<ValidationResult>();
 
             // Act
@@ -55,7 +63,7 @@ namespace Bingo.Specification.ModelTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData("  ")]
-        public void Should_Require_ShortName_Field_Without_Null_Or_Whitespace(string shortName)
+        public void ExercisePostDtoValidation_RequiresShortName_WhenShortNameIsNullOrWhitespace(string shortName)
         {
             // Arrange
             var postDto = new PostExerciseDto
@@ -63,7 +71,7 @@ namespace Bingo.Specification.ModelTests
                 ShortName = shortName
             };
             var property = nameof(postDto.ShortName);
-            var context = new ValidationContext(postDto) { MemberName = property };
+            var context = new ValidationContext(postDto) {MemberName = property};
             var results = new List<ValidationResult>();
 
             // Act
@@ -78,7 +86,7 @@ namespace Bingo.Specification.ModelTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData("  ")]
-        public void Should_Require_LongName_Field_Without_Null_Or_Whitespace(string longName)
+        public void ExercisePostDtoValidation_RequiresLongName_WhenLongNameIsNullOrWhitespace(string longName)
         {
             // Arrange
             var postDto = new PostExerciseDto
@@ -86,7 +94,7 @@ namespace Bingo.Specification.ModelTests
                 LongName = longName
             };
             var property = nameof(postDto.LongName);
-            var context = new ValidationContext(postDto) { MemberName = property };
+            var context = new ValidationContext(postDto) {MemberName = property};
             var results = new List<ValidationResult>();
 
             // Act
@@ -98,16 +106,16 @@ namespace Bingo.Specification.ModelTests
         }
 
         [Fact]
-        public void Should_Require_Name_To_Have_30_Character_Maximum()
+        public void ExercisePostDtoValidation_RequiresMaxLenghtOf30_ForNameProperty()
         {
             // Arrange
             var postDto = new PostExerciseDto
             {
                 Name = new string('a', 31)
             };
-            var context = new ValidationContext(postDto) { MemberName = nameof(postDto.Name) };
+            var context = new ValidationContext(postDto) {MemberName = nameof(postDto.Name)};
             var results = new List<ValidationResult>();
-                
+
             // Act
             var isValid = Validator.TryValidateProperty(postDto.Name, context, results);
 
@@ -118,14 +126,14 @@ namespace Bingo.Specification.ModelTests
         }
 
         [Fact]
-        public void Should_Require_ShortName_To_Have_20_Character_Maximum()
+        public void ExercisePostDtoValidation_RequiresMaxLenghtOf20_ForShortNameProperty()
         {
             // Arrange
             var postDto = new PostExerciseDto
             {
                 ShortName = new string('a', 21)
             };
-            var context = new ValidationContext(postDto) { MemberName = nameof(postDto.ShortName) };
+            var context = new ValidationContext(postDto) {MemberName = nameof(postDto.ShortName)};
             var results = new List<ValidationResult>();
 
             // Act
@@ -138,14 +146,14 @@ namespace Bingo.Specification.ModelTests
         }
 
         [Fact]
-        public void Should_Require_LongName_To_Have_60_Character_Maximum()
+        public void ExercisePostDtoValidation_RequiresMaxLenghtOf30_ForLongNameProperty()
         {
             // Arrange
             var postDto = new PostExerciseDto
             {
                 LongName = new string('a', 61)
             };
-            var context = new ValidationContext(postDto) { MemberName = nameof(postDto.LongName) };
+            var context = new ValidationContext(postDto) {MemberName = nameof(postDto.LongName)};
             var results = new List<ValidationResult>();
 
             // Act

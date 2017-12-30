@@ -17,12 +17,9 @@ namespace Bingo.Specification.ServicesTests
             ExercisesRepositoryMock = new Mock<IExercisesRepository>();
             ExercisesService = new ExercisesService(ExercisesRepositoryMock.Object);
         }
-    }
 
-    public class ReadAllAsync : ExercisesServiceTests
-    {
         [Fact]
-        public async void Should_Return_Exercises_When_Repository_Returns_Exercises()
+        public async void ReadAllAsync_ReturnsExercises_WhenRepositoryReturnsExercises()
         {
             // Arrange
             var expectedExercises = TestData.Exercises.ContractExercises;
@@ -38,7 +35,7 @@ namespace Bingo.Specification.ServicesTests
         }
 
         [Fact]
-        public async void Should_Return_Empty_Array_When_Repository_Return_Empty_Array()
+        public async void ReadAllAsync_ReturnsEmptyArray_WhenRepositoryReturnsEmptyArray()
         {
             // Arrange
             var expectedExercises = new List<Exercise>();
@@ -52,12 +49,9 @@ namespace Bingo.Specification.ServicesTests
             // Assert
             Assert.Same(expectedExercises, result);
         }
-    }
- 
-    public class ReadOneAsync : ExercisesServiceTests
-    {
+
         [Fact]
-        public async void Should_Return_Exercise_When_Service_Returns_Exercise()
+        public async void ReadOneAsync_ReturnsExercise_WhenRepositoryReturnsExercise()
         {
             // Arrange
             var expectedExercise = TestData.Exercises.ContractExercise;
@@ -73,7 +67,7 @@ namespace Bingo.Specification.ServicesTests
         }
 
         [Fact]
-        public async void Should_Return_Null_When_Service_Returns_Null()
+        public async void ReadOneAsync_ReturnsNull_WhenRepositoryReturnsNull()
         {
             // Arrange
             ExercisesRepositoryMock
@@ -86,12 +80,9 @@ namespace Bingo.Specification.ServicesTests
             // Assert
             Assert.Null(result);
         }
-    }
-    
-    public class CreateOneAsync : ExercisesServiceTests
-    {
+   
         [Fact]
-        public async void Should_Return_Created_Exercise_When_Repository_Returns_Exercise()
+        public async void CreateOneAsync_ReturnsCreatedExercise_WhenServiceReturnsExercise()
         {
             // Arrange
             var exerciseToCreate = TestData.Exercises.ExerciseWithoutId;
@@ -108,7 +99,7 @@ namespace Bingo.Specification.ServicesTests
         }
 
         [Fact]
-        public async void Should_Return_Null_When_Repository_Returns_Null()
+        public async void CreateOneAsync_ReturnsNull_WhenRepositoryReturnsNull()
         {
             // Arrange
             var exerciseToCreate = TestData.Exercises.ExerciseWithoutId;
@@ -122,12 +113,9 @@ namespace Bingo.Specification.ServicesTests
             // Assert
             Assert.Null(result);
         }
-    }
-    
-    public class DeleteOneAsync : ExercisesServiceTests
-    {
+
         [Fact]
-        public async void Should_Return_Exercise_When_Repository_Returns_Deleted_Exercise()
+        public async void DeleteOneAsync_ReturnsExercise_WhenRepositoryReturnsExercise()
         {
             // Arrange
             var deletedExercise = TestData.Exercises.ContractExercise;
@@ -143,7 +131,7 @@ namespace Bingo.Specification.ServicesTests
         }
 
         [Fact]
-        public async void Should_Return_Null_When_Repository_Returns_Null()
+        public async void DeleteOneAsync_ReturnsNull_WhenRepositoryReturnsNull()
         {
             // Arrange
             ExercisesRepositoryMock

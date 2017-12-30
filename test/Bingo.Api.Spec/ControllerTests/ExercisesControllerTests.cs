@@ -18,12 +18,9 @@ namespace Bingo.Specification.ControllerTests
             ExercisesServiceMock = new Mock<IExercisesService>();
             ExercisesController = new ExercisesController(ExercisesServiceMock.Object);
         }
-    }
 
-    public class ReadAllAsync : ExercisesControllerTests
-    {
         [Fact]
-        public async void Should_Return_OkObjectResult_And_Expected_Exercises_When_Service_Returns_Exercises()
+        public async void ReadAllAsync_ReturnsOkObjectResult_WhenServiceReturnsExercises()
         {
             // Arrange
             var expectedExercises = TestData.Exercises.ContractExercises;
@@ -40,7 +37,7 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void Should_Return_OkObjectResult_And_Empty_Array_When_Service_Return_Empty_Array()
+        public async void ReadAllAsync_ReturnsOkObjectResult_WhenServiceReturnsEmptyList()
         {
             // Arrange
             var expectedExercises = new List<Exercise>();
@@ -55,12 +52,9 @@ namespace Bingo.Specification.ControllerTests
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Same(expectedExercises, okResult.Value);
         }
-    }
-
-    public class ReadOneAsync : ExercisesControllerTests
-    {
+   
         [Fact]
-        public async void Should_Return_OkObjectResult_And_Expected_Exercise_When_Service_Returns_Exercise()
+        public async void ReadOneAsync_ReturnsOkObjectResult_WhenServiceReturnsExercise()
         {
             // Arrange
             var expectedExercise = TestData.Exercises.ContractExercise;
@@ -77,7 +71,7 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void Should_Return_NotFoundResult_When_Service_Returns_Null()
+        public async void ReadOneAsync_ReturnsNotFoundResult_WhenServiceReturnsNull()
         {
             // Arrange
             ExercisesServiceMock
@@ -90,12 +84,9 @@ namespace Bingo.Specification.ControllerTests
             // Assert
             Assert.IsType<NotFoundResult>(result);
         }
-    }
-
-    public class CreateOneAsync : ExercisesControllerTests
-    {
+   
         [Fact]
-        public async void Should_Return_CreatedAtActionResult_And_Created_Exercise_When_Service_Returns_Exercise()
+        public async void CreateOneAsync_ReturnsCreatedAtActionResult_WhenServiceReturnsExercise()
         {
             // Arrange
             var exercisePostDto = TestData.Exercises.ContractExercisePostDto;
@@ -113,7 +104,7 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void Should_Return_BadRequestObjectResult_When_Service_Returns_Null()
+        public async void CreateOneAsync_ReturnsBadRequestObjectResult_WhenServiceReturnsNull()
         {
             // Arrange
             var exercisePostDto = TestData.Exercises.ContractExercisePostDto;
@@ -129,7 +120,7 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void Should_Return_BadRequestObjectResult_When_ModelState_Is_Invalid()
+        public async void CreateOneAsync_ReturnsBadRequestObjectResult_WhenModelStateIsInvalid()
         {
             // Arrange
             var exercisePostDto = TestData.Exercises.ContractExercisePostDto;
@@ -141,12 +132,9 @@ namespace Bingo.Specification.ControllerTests
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);
         }
-    }
-
-    public class DeleteOneAsync : ExercisesControllerTests
-    {
+    
         [Fact]
-        public async void Should_Return_NoContentResult_When_Service_Returns_Deleted_Exercise()
+        public async void DeleteOneAsync_ReturnsNoContentResult_WhenServiceReturnsDeletedExercise()
         {
             // Arrange
             var deletedExercise = TestData.Exercises.ContractExercise;
@@ -162,7 +150,7 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void Should_Return_NoContentResult_When_Service_Returns_Null()
+        public async void DeleteOneAsync_ReturnsNoContentResult_WhenServiceReturnsNull()
         {
             // Arrange
             ExercisesServiceMock
