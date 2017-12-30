@@ -14,7 +14,7 @@ namespace Bingo.Specification.TestData
             ShortName = "Press"
         };
 
-        public static IEnumerable<Exercise> ContractExercises => new List<Exercise>
+        public static List<Exercise> ContractExercises => new List<Exercise>
         {
             ContractExercise,
             new Exercise

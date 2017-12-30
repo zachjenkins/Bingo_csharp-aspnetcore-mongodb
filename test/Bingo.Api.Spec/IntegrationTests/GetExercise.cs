@@ -1,26 +1,41 @@
-﻿namespace Bingo.Specification.IntegrationTests
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using Bingo.Repository.Entities;
+using Bingo.Specification.IntegrationTests.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
+using RestEase;
+using Shouldly;
+using Xunit;
+using Xunit.Extensions;
+
+namespace Bingo.Specification.IntegrationTests
 {
-    public class ExercisesControllerTest//: BaseHttpTest
-    {/*
-        protected Mock<ITableStorageRepository<NinjaEntity>> TableStorageMock { get; }
+    public class ExercisesControllerTest: BaseHttpTest
+    {
+        private readonly IExercisesApi _exercisesApi;
+        private readonly List<Exercise> _expectedExercises;
 
-        protected string ClanName1 => "Iga";
-        protected string ClanName2 => "Kōga";
-
-        public NinjaControllerTest()
+        public ExercisesControllerTest()
         {
-            TableStorageMock = new Mock<ITableStorageRepository<NinjaEntity>>();
+            _expectedExercises = TestData.Exercises.ContractExercises;
+            ExercisesCollection.InsertMany(_expectedExercises);
+            _exercisesApi = RestClient.For<IExercisesApi>(Client);
         }
-
-        protected override void ConfigureServices(IServiceCollection services)
+        /*
+        [Fact]
+        public void Get_Exercises_Returns_Exercises_And_200()
         {
-            services
+            var response = _exercisesApi.GetExercises().Result;
+            var actualExercises = response.GetContent();
 
-                //.AddSingleton(x => TableStorageMock.Object)
-                .AddSingleton<IEnumerable<Exercise>>(x => new List<Exercise>
-                {
+            this.ShouldSatisfyAllConditions(
+                    () => response.ResponseMessage.StatusCode.ShouldBe(HttpStatusCode.OK),
+                    () => actualExercises.ShouldBe(_expectedExercises)
+                );
 
-                });
+            Dispose();
         }*/
     }
 }

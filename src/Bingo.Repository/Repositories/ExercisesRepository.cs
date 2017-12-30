@@ -10,13 +10,9 @@ namespace Bingo.Repository.Repositories
     {
         private readonly IMongoCollection<Exercise> _collection;
 
-        public ExercisesRepository()//IMongoCollection<Exercise> collection)
+        public ExercisesRepository(IMongoCollection<Exercise> collection)
         {
-            //_collection = collection;
-
-            IMongoClient client = new MongoClient(@"mongodb://localhost:27017?connectionTimeout=30000");
-            var database = client.GetDatabase("bingo");
-            _collection = database.GetCollection<Exercise>("exercises");
+            _collection = collection;
         }
 
         public async Task<Exercise> ReadOneAsync(string id)
@@ -37,7 +33,7 @@ namespace Bingo.Repository.Repositories
         {
             var filter = Builders<Exercise>.Filter.Empty;
             var results = await _collection.FindAsync(filter);
-            return results.ToEnumerable();
+            return await results.ToListAsync();
         }
         
         public async Task<Exercise> CreateOneAsync(Exercise exercise)

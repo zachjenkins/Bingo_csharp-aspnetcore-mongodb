@@ -7,39 +7,34 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Mongo2Go;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Bingo.Api
+namespace Bingo.Specification.IntegrationTests
 {
-    public class Startup
+    public class TestStartup
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
+            // Register Services
             services.AddTransient<IExercisesService, ExercisesService>();
+
+            // Register Repositories
             services.AddTransient<IExercisesRepository, ExercisesRepository>();
 
-            IMongoClient client = new MongoClient(@"mongodb://localhost:27017?connectionTimeout=30000");
-            var database = client.GetDatabase("bingo");
-            IMongoCollection<Exercise> collection = database.GetCollection<Exercise>("exercises");
-           
-            services.AddSingleton<IMongoCollection<Exercise>>(collection);
-
+            // Settings
+            services.AddMvc();
             services.AddMvc().AddJsonOptions(opt => opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
-
             JsonConvert.DefaultSettings = (() =>
             {
                 var settings = new JsonSerializerSettings();
                 settings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
                 return settings;
             });
-
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,11 +44,10 @@ namespace Bingo.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-          
+
             app.UseMvc();
-             
+
         }
 
-        
     }
 }

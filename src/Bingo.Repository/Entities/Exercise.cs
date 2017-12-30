@@ -11,5 +11,15 @@ namespace Bingo.Repository.Entities
         public string Name { get; set; }
         public string ShortName { get; set; }
         public string LongName { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return (obj is Exercise item) ? true : false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 }

@@ -1,57 +1,98 @@
-﻿namespace Bingo.Specification.IntegrationTests
+﻿using System;
+using System.Net.Http;
+using System.Reflection;
+using Bingo.Api;
+using Bingo.Repository.Contracts;
+using Bingo.Repository.Entities;
+using Bingo.Repository.Repositories;
+using Bingo.Services.Contracts;
+using Bingo.Services.Services;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using Mongo2Go;
+using MongoDB.Driver;
+using Xunit;
+using Bingo.Specification.IntegrationTests.Interfaces;
+using Microsoft.AspNetCore.Builder;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using RestEase;
+
+namespace Bingo.Specification.IntegrationTests
 {
-    /*
-     public abstract class BaseHttpTest : IDisposable
-     {
-         protected TestServer Server { get; }
-         protected HttpClient Client { get; }
+    public class BaseHttpTest
+    {
+        protected TestServer Server { get; }
+        protected HttpClient Client { get; set; }
+        protected MongoClient MongoClient { get; set; }
 
-         protected virtual Uri BaseAddress => new Uri("http://localhost");
-         protected virtual string Environment => "Development";
+        protected virtual string Environment => "Development";
+        
+        internal static IMongoCollection<Exercise> ExercisesCollection;
 
-         public BaseHttpTest()
-         {
-             var builder = Program
-                 .CreateWebHostBuilder(null)
-                 .UseEnvironment(Environment)
-                 .ConfigureServices(ConfigureServices);
+        public BaseHttpTest()
+        {
+            Server = new TestServer(new WebHostBuilder()
+                .UseStartup<TestStartup>()
+                .ConfigureServices(ConfigureServices));
 
-             Server = new TestServer(builder);
-             Client = Server.CreateClient();
-             Client.BaseAddress = BaseAddress;
-         }
+            Client = Server.CreateClient(); 
+        }
 
-         protected virtual void ConfigureServices(IServiceCollection services)
-         {
+        /*[Fact]
+        public async void Test1()
+        {
+            var stuff = await Client.GetAsync("/api/exercises");
 
+            var body = await stuff.Content.ReadAsStringAsync();
+            
+        }*/
 
-             services.AddTransient<IMongoCollection<Exercise>, FakeMongo>();
-             services.AddTransient<IExercisesRepository, ExercisesRepository>();
+        protected virtual void ConfigureServices(IServiceCollection services)
+        {
+            var runner = MongoDbRunner.StartForDebugging();
+            MongoClient = new MongoClient(runner.ConnectionString);
+            
+            IMongoDatabase database = MongoClient.GetDatabase("BingoTest");
+            ExercisesCollection = database.GetCollection<Exercise>("exercises");
+            
+            services.AddSingleton<IMongoCollection<Exercise>>(ExercisesCollection);
+        }
 
-         }
+        public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            app.UseMvc();
+        }
+        
+        #region IDisposable Support
 
-         #region IDisposable Support
+        private bool disposedValue = false;
 
-         private bool disposedValue = false;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Client.Dispose();
+                    Server.Dispose();
+                    MongoClient.DropDatabase("BingoTest");
+                }
+                disposedValue = true;
+            }
+        }
 
-         protected virtual void Dispose(bool disposing)
-         {
-             if (!disposedValue)
-             {
-                 if (disposing)
-                 {
-                     Client.Dispose();
-                     Server.Dispose();
-                 }
-                 disposedValue = true;
-             }
-         }
+        public void Dispose()
+        {
+            Dispose(true);
+        }
 
-         public void Dispose()
-         {
-             Dispose(true);
-         }
-
-         #endregion
-     }*/
+        #endregion
+    }
 }

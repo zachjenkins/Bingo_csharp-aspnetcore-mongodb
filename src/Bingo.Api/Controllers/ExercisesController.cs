@@ -35,7 +35,7 @@ namespace Bingo.Api.Controllers
             
             if (exercise == null)
                 return NotFound();
-
+            
             return Ok(exercise);
         }
 

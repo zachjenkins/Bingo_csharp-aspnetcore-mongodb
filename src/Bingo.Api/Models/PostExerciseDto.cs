@@ -9,10 +9,10 @@ namespace Bingo.Api.Models
         [Required, MaxLength(30)]
         public string Name { get; set; }
 
-        [MaxLength(20)]
+        [Required, MaxLength(20)]
         public string ShortName { get; set; }
 
-        [MaxLength(60)]
+        [Required, MaxLength(60)]
         public string LongName { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
