@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 
 namespace Bingo.Repository.Entities
 {
@@ -14,12 +15,12 @@ namespace Bingo.Repository.Entities
 
         public override bool Equals(object obj)
         {
-            return (obj is Exercise item) ? true : false;
+            return this.DeepEquals(obj);
         }
 
-        public override int GetHashCode()
+        public override string ToString()
         {
-            return this.Id.GetHashCode();
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
 }

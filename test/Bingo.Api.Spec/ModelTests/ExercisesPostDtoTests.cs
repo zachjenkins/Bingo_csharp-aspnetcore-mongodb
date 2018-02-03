@@ -1,12 +1,13 @@
 using Bingo.Api.Models;
-using System;
-using System.Collections.Generic;
+using Bingo.Specification.Helpers;
+using Shouldly;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Xunit;
 
 namespace Bingo.Specification.ModelTests
 {
+    [Trait("Model", nameof(ExerciseDtoTests))]
     public class ExerciseDtoTests
     {
         [Fact]
@@ -16,10 +17,10 @@ namespace Bingo.Specification.ModelTests
             var postDto = TestData.Exercises.ContractExercisePostDto;
 
             // Act
-            var isValid = Validator.TryValidateObject(postDto, new ValidationContext(postDto), new List<ValidationResult>());
+            var modelValidation = AspHelpers.ValidateDto(postDto);
 
             // Assert
-            Assert.True(isValid);
+            modelValidation.IsValid.ShouldBeTrue();
         }
 
         [Fact]
@@ -33,7 +34,7 @@ namespace Bingo.Specification.ModelTests
             var results = postDto.Validate(context);
 
             // Assert
-            Assert.Empty(results);
+            results.ShouldBeEmpty();
         }
 
         [Theory]
@@ -43,20 +44,14 @@ namespace Bingo.Specification.ModelTests
         public void ExercisePostDtoValidation_RequiresName_WhenNameIsNullOrWhitespace(string name)
         {
             // Arrange
-            var postDto = new PostExerciseDto
-            {
-                Name = name
-            };
-            var property = nameof(postDto.Name);
-            var context = new ValidationContext(postDto) {MemberName = property};
-            var results = new List<ValidationResult>();
+            var postDto = new PostExerciseDto { Name = name };
 
             // Act
-            var isValid = Validator.TryValidateProperty(postDto.Name, context, results);
+            var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.Name));
 
             // Assert
-            Assert.False(isValid);
-            Assert.True(results.First().ErrorMessage.Contains($"{property} field is required"));
+            modelValidation.IsValid.ShouldBeFalse();
+            modelValidation.Results.First().ErrorMessage.ShouldContain($"{nameof(postDto.Name)} field is required");
         }
 
         [Theory]
@@ -66,20 +61,14 @@ namespace Bingo.Specification.ModelTests
         public void ExercisePostDtoValidation_RequiresShortName_WhenShortNameIsNullOrWhitespace(string shortName)
         {
             // Arrange
-            var postDto = new PostExerciseDto
-            {
-                ShortName = shortName
-            };
-            var property = nameof(postDto.ShortName);
-            var context = new ValidationContext(postDto) {MemberName = property};
-            var results = new List<ValidationResult>();
+            var postDto = new PostExerciseDto { ShortName = shortName };
 
             // Act
-            var isValid = Validator.TryValidateProperty(postDto.Name, context, results);
+            var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.ShortName));
 
             // Assert
-            Assert.False(isValid);
-            Assert.True(results.First().ErrorMessage.Contains($"{property} field is required"));
+            modelValidation.IsValid.ShouldBeFalse();
+            modelValidation.Results.First().ErrorMessage.ShouldContain($"{nameof(postDto.ShortName)} field is required");
         }
 
         [Theory]
@@ -89,80 +78,59 @@ namespace Bingo.Specification.ModelTests
         public void ExercisePostDtoValidation_RequiresLongName_WhenLongNameIsNullOrWhitespace(string longName)
         {
             // Arrange
-            var postDto = new PostExerciseDto
-            {
-                LongName = longName
-            };
-            var property = nameof(postDto.LongName);
-            var context = new ValidationContext(postDto) {MemberName = property};
-            var results = new List<ValidationResult>();
+            var postDto = new PostExerciseDto { LongName = longName };
 
             // Act
-            var isValid = Validator.TryValidateProperty(postDto.Name, context, results);
+            var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.LongName));
 
             // Assert
-            Assert.False(isValid);
-            Assert.True(results.First().ErrorMessage.Contains($"{property} field is required"));
+            modelValidation.IsValid.ShouldBeFalse();
+            modelValidation.Results.First().ErrorMessage.ShouldContain($"{nameof(postDto.LongName)} field is required");
         }
 
         [Fact]
         public void ExercisePostDtoValidation_RequiresMaxLenghtOf30_ForNameProperty()
         {
             // Arrange
-            var postDto = new PostExerciseDto
-            {
-                Name = new string('a', 31)
-            };
-            var context = new ValidationContext(postDto) {MemberName = nameof(postDto.Name)};
-            var results = new List<ValidationResult>();
-
+            var postDto = new PostExerciseDto { Name = new string('a', 31) };
+          
             // Act
-            var isValid = Validator.TryValidateProperty(postDto.Name, context, results);
+            var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.Name));
 
             // Assert
-            Assert.False(isValid);
-            Assert.Single(results);
-            Assert.True(results.First().ErrorMessage.Contains("'30'"));
+            modelValidation.IsValid.ShouldBeFalse();
+            modelValidation.Results.Count.ShouldBe(1);
+            modelValidation.Results.First().ErrorMessage.ShouldContain("'30'");
         }
 
         [Fact]
         public void ExercisePostDtoValidation_RequiresMaxLenghtOf20_ForShortNameProperty()
         {
             // Arrange
-            var postDto = new PostExerciseDto
-            {
-                ShortName = new string('a', 21)
-            };
-            var context = new ValidationContext(postDto) {MemberName = nameof(postDto.ShortName)};
-            var results = new List<ValidationResult>();
+            var postDto = new PostExerciseDto { ShortName = new string('a', 21) };
 
             // Act
-            var isValid = Validator.TryValidateProperty(postDto.ShortName, context, results);
+            var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.ShortName));
 
             // Assert
-            Assert.False(isValid);
-            Assert.Single(results);
-            Assert.True(results.First().ErrorMessage.Contains("'20'"));
+            modelValidation.IsValid.ShouldBeFalse();
+            modelValidation.Results.Count.ShouldBe(1);
+            modelValidation.Results.First().ErrorMessage.ShouldContain("'20'");
         }
 
         [Fact]
         public void ExercisePostDtoValidation_RequiresMaxLenghtOf30_ForLongNameProperty()
         {
             // Arrange
-            var postDto = new PostExerciseDto
-            {
-                LongName = new string('a', 61)
-            };
-            var context = new ValidationContext(postDto) {MemberName = nameof(postDto.LongName)};
-            var results = new List<ValidationResult>();
+            var postDto = new PostExerciseDto { LongName = new string('a', 61) };
 
             // Act
-            var isValid = Validator.TryValidateProperty(postDto.LongName, context, results);
+            var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.LongName));
 
             // Assert
-            Assert.False(isValid);
-            Assert.Single(results);
-            Assert.True(results.First().ErrorMessage.Contains("'60'"));
+            modelValidation.IsValid.ShouldBeFalse();
+            modelValidation.Results.Count.ShouldBe(1);
+            modelValidation.Results.First().ErrorMessage.ShouldContain("'60'");
         }
     }
 }

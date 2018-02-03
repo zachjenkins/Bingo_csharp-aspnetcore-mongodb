@@ -1,14 +1,10 @@
 ﻿using Bingo.Repository.Contracts;
-using Bingo.Repository.Entities;
 using Bingo.Repository.Repositories;
 using Bingo.Services.Contracts;
 using Bingo.Services.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Mongo2Go;
-using MongoDB.Driver;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 

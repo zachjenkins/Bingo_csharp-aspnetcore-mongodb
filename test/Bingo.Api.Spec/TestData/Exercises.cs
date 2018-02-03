@@ -1,11 +1,17 @@
 ﻿using Bingo.Api.Models;
 using Bingo.Repository.Entities;
+using Bingo.Specification.Helpers;
 using System.Collections.Generic;
 
 namespace Bingo.Specification.TestData
 {
     public static class Exercises
     {
+        public static IEnumerable<Exercise> GetAllExercisesForCollection()
+        {
+            return ContractExercises;
+        }
+
         public static Exercise ContractExercise => new Exercise
         {
             Id = "012345678901234567894542",
@@ -33,7 +39,7 @@ namespace Bingo.Specification.TestData
             ShortName = "Tricep Extensions"
         };
 
-        public static Exercise ContractExercisePostDtoResponse => new Exercise
+        public static Exercise ContractExercisePostDtoResponseMock => new Exercise
         {
             Id = "123456789012345678904578",
             Name = "Tricep Extensions",
@@ -46,6 +52,13 @@ namespace Bingo.Specification.TestData
             Name = "Tricep Extensions",
             LongName = "ZBar Tricep Pushdowns",
             ShortName = "Tricep Extensions"
+        };
+
+        public static Exercise RandomizedExercise => new Exercise
+        {
+            ShortName = Utilities.GetRandomString(),
+            Name = Utilities.GetRandomString(),
+            LongName = Utilities.GetRandomString()
         };
     }
 }

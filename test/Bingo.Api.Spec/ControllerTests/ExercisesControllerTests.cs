@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Bingo.Specification.ControllerTests
 {
+    [Trait("Controller", nameof(ExercisesControllerTests))]
     public class ExercisesControllerTests
     {
         protected ExercisesController ExercisesController { get; }
@@ -90,7 +91,7 @@ namespace Bingo.Specification.ControllerTests
         {
             // Arrange
             var exercisePostDto = TestData.Exercises.ContractExercisePostDto;
-            var expectedExercise = TestData.Exercises.ContractExercisePostDtoResponse;
+            var expectedExercise = TestData.Exercises.ContractExercisePostDtoResponseMock;
             ExercisesServiceMock
                 .Setup(x => x.CreateOneAsync(It.IsAny<Exercise>()))
                 .ReturnsAsync(expectedExercise);

@@ -1,17 +1,7 @@
-﻿using System;
-using Bingo.Repository.Contracts;
-using Bingo.Repository.Entities;
-using Bingo.Services.Services;
-using Moq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading;
+﻿using Bingo.Repository.Entities;
 using Bingo.Repository.Repositories;
-using Microsoft.Net.Http.Headers;
 using Mongo2Go;
 using MongoDB.Driver;
-using Xunit;
 
 namespace Bingo.Specification.RepositoryTests
 {
@@ -19,13 +9,13 @@ namespace Bingo.Specification.RepositoryTests
     {
         protected ExercisesRepository ExercisesRepository { get; }
         
-        internal static MongoDbRunner _runner;
+        internal static MongoDbRunner Runner;
         internal static IMongoCollection<Exercise> ExercisesCollection;
 
         public ExercisesRepositoryTests()
         {
-            _runner = MongoDbRunner.Start();
-            MongoClient client = new MongoClient(_runner.ConnectionString);
+            Runner = MongoDbRunner.Start();
+            MongoClient client = new MongoClient(Runner.ConnectionString);
             IMongoDatabase database = client.GetDatabase("BingoTest");
             ExercisesCollection = database.GetCollection<Exercise>("RepoTestColl");
             

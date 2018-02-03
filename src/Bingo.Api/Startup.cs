@@ -6,7 +6,6 @@ using Bingo.Services.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -28,7 +27,7 @@ namespace Bingo.Api
             var database = client.GetDatabase("bingo");
             IMongoCollection<Exercise> collection = database.GetCollection<Exercise>("exercises");
            
-            services.AddSingleton<IMongoCollection<Exercise>>(collection);
+            services.AddSingleton(collection);
 
             services.AddMvc().AddJsonOptions(opt => opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 

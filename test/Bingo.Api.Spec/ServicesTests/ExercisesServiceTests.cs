@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Bingo.Specification.ServicesTests
 {
+    [Trait("Service", nameof(ExercisesServiceTests))]
     public class ExercisesServiceTests
     {
         protected ExercisesService ExercisesService { get; }
@@ -86,7 +87,7 @@ namespace Bingo.Specification.ServicesTests
         {
             // Arrange
             var exerciseToCreate = TestData.Exercises.ExerciseWithoutId;
-            var createdExercise = TestData.Exercises.ContractExercisePostDtoResponse;
+            var createdExercise = TestData.Exercises.ContractExercisePostDtoResponseMock;
             ExercisesRepositoryMock
                 .Setup(x => x.CreateOneAsync(It.IsAny<Exercise>()))
                 .ReturnsAsync(createdExercise);
