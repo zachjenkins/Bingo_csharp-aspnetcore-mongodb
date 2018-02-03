@@ -19,7 +19,7 @@ namespace Bingo.Api.Controllers
 
         [HttpGet(Name = "Get All Exercises")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> ReadAllAsync()
+        public async Task<IActionResult> GetManyAsync()
         {
             var allExercises = await _exercisesService.ReadAllAsync();
 
@@ -29,7 +29,7 @@ namespace Bingo.Api.Controllers
         [HttpGet("{id}", Name = "Get Exercise by Id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> ReadOneAsync(string id)
+        public async Task<IActionResult> GetOneByIdAsync(string id)
         {
             var exercise = await _exercisesService.ReadOneAsync(id);
             
@@ -41,7 +41,7 @@ namespace Bingo.Api.Controllers
 
         [HttpPost(Name = "Post Exercise")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> CreateOneAsync([FromBody] PostExerciseDto exerciseDto)
+        public async Task<IActionResult> PostOneAsync([FromBody] PostExerciseDto exerciseDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.Values);
@@ -57,7 +57,7 @@ namespace Bingo.Api.Controllers
         [HttpDelete("{id}", Name = "Delete Exercise")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteOneAsync(string id)
+        public async Task<IActionResult> DeleteOneByIdAsync(string id)
         {
             await _exercisesService.DeleteOneAsync(id);
             

@@ -20,7 +20,7 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void ReadAllAsync_ReturnsOkObjectResult_WhenServiceReturnsExercises()
+        public async void GetManyAsync_ReturnsOkObjectResult_WhenServiceReturnsExercises()
         {
             // Arrange
             var expectedExercises = TestData.Exercises.ContractExercises;
@@ -29,7 +29,7 @@ namespace Bingo.Specification.ControllerTests
                 .ReturnsAsync(expectedExercises);
 
             // Act
-            var result = await ExercisesController.ReadAllAsync();
+            var result = await ExercisesController.GetManyAsync();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -37,7 +37,7 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void ReadAllAsync_ReturnsOkObjectResult_WhenServiceReturnsEmptyList()
+        public async void GetManyAsync_ReturnsOkObjectResult_WhenServiceReturnsEmptyList()
         {
             // Arrange
             var expectedExercises = new List<Exercise>();
@@ -46,7 +46,7 @@ namespace Bingo.Specification.ControllerTests
                 .ReturnsAsync(expectedExercises);
 
             // Act
-            var result = await ExercisesController.ReadAllAsync();
+            var result = await ExercisesController.GetManyAsync();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -54,7 +54,7 @@ namespace Bingo.Specification.ControllerTests
         }
    
         [Fact]
-        public async void ReadOneAsync_ReturnsOkObjectResult_WhenServiceReturnsExercise()
+        public async void GetOneByIdAsync_ReturnsOkObjectResult_WhenServiceReturnsExercise()
         {
             // Arrange
             var expectedExercise = TestData.Exercises.ContractExercise;
@@ -63,7 +63,7 @@ namespace Bingo.Specification.ControllerTests
                 .ReturnsAsync(expectedExercise);
 
             // Act
-            var result = await ExercisesController.ReadOneAsync("123021");
+            var result = await ExercisesController.GetOneByIdAsync("123021");
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -71,7 +71,7 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void ReadOneAsync_ReturnsNotFoundResult_WhenServiceReturnsNull()
+        public async void GetOneByIdAsync_ReturnsNotFoundResult_WhenServiceReturnsNull()
         {
             // Arrange
             ExercisesServiceMock
@@ -79,14 +79,14 @@ namespace Bingo.Specification.ControllerTests
                 .ReturnsAsync((Exercise)null);
 
             // Act
-            var result = await ExercisesController.ReadOneAsync("123021");
+            var result = await ExercisesController.GetOneByIdAsync("123021");
 
             // Assert
             Assert.IsType<NotFoundResult>(result);
         }
    
         [Fact]
-        public async void CreateOneAsync_ReturnsCreatedAtActionResult_WhenServiceReturnsExercise()
+        public async void PostOneAsync_ReturnsCreatedAtActionResult_WhenServiceReturnsExercise()
         {
             // Arrange
             var exercisePostDto = TestData.Exercises.ContractExercisePostDto;
@@ -96,7 +96,7 @@ namespace Bingo.Specification.ControllerTests
                 .ReturnsAsync(expectedExercise);
 
             // Act
-            var result = await ExercisesController.CreateOneAsync(exercisePostDto);
+            var result = await ExercisesController.PostOneAsync(exercisePostDto);
 
             // Assert
             var createdResult = Assert.IsType<ObjectResult>(result);
@@ -104,7 +104,7 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void CreateOneAsync_ReturnsBadRequestObjectResult_WhenServiceReturnsNull()
+        public async void PostOneAsync_ReturnsBadRequestObjectResult_WhenServiceReturnsNull()
         {
             // Arrange
             var exercisePostDto = TestData.Exercises.ContractExercisePostDto;
@@ -113,28 +113,28 @@ namespace Bingo.Specification.ControllerTests
                 .ReturnsAsync((Exercise)null);
 
             // Act
-            var result = await ExercisesController.CreateOneAsync(exercisePostDto);
+            var result = await ExercisesController.PostOneAsync(exercisePostDto);
 
             // Assert
             Assert.IsType<BadRequestResult>(result);
         }
 
         [Fact]
-        public async void CreateOneAsync_ReturnsBadRequestObjectResult_WhenModelStateIsInvalid()
+        public async void PostOneAsync_ReturnsBadRequestObjectResult_WhenModelStateIsInvalid()
         {
             // Arrange
             var exercisePostDto = TestData.Exercises.ContractExercisePostDto;
             ExercisesController.ModelState.AddModelError("Mock", "Error");
 
             // Act
-            var result = await ExercisesController.CreateOneAsync(exercisePostDto);
+            var result = await ExercisesController.PostOneAsync(exercisePostDto);
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);
         }
     
         [Fact]
-        public async void DeleteOneAsync_ReturnsNoContentResult_WhenServiceReturnsDeletedExercise()
+        public async void DeleteOneByIdAsync_ReturnsNoContentResult_WhenServiceReturnsDeletedExercise()
         {
             // Arrange
             var deletedExercise = TestData.Exercises.ContractExercise;
@@ -143,14 +143,14 @@ namespace Bingo.Specification.ControllerTests
                 .ReturnsAsync(deletedExercise);
 
             // Act
-            var result = await ExercisesController.DeleteOneAsync("123021");
+            var result = await ExercisesController.DeleteOneByIdAsync("123021");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
         }
 
         [Fact]
-        public async void DeleteOneAsync_ReturnsNoContentResult_WhenServiceReturnsNull()
+        public async void DeleteOneByIdAsync_ReturnsNoContentResult_WhenServiceReturnsNull()
         {
             // Arrange
             ExercisesServiceMock
@@ -158,7 +158,7 @@ namespace Bingo.Specification.ControllerTests
                 .ReturnsAsync((Exercise)null);
 
             // Act
-            var result = await ExercisesController.DeleteOneAsync("123021");
+            var result = await ExercisesController.DeleteOneByIdAsync("123021");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
