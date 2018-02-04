@@ -4,7 +4,7 @@ using RestEase;
 using System.Threading.Tasks;
 using Bingo.Api.Models;
 
-namespace Bingo.Specification.IntegrationTests.Interfaces
+namespace Bingo.Specification.IntegrationTests.Support
 {
     [AllowAnyStatusCode]
     public interface IExercisesApi

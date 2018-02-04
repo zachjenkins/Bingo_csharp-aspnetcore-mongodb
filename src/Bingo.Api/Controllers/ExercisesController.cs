@@ -25,7 +25,7 @@ namespace Bingo.Api.Controllers
 
             return Ok(allExercises);
         }
-       
+        
         [HttpGet("{id}", Name = "Get Exercise by Id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

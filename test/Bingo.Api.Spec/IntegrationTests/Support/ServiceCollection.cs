@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace Bingo.Specification.IntegrationTests.Fixtures
+namespace Bingo.Specification.IntegrationTests.Support
 {
     [CollectionDefinition("HttpTest")]
     public class ServiceCollection : ICollectionFixture<ServiceFixture>

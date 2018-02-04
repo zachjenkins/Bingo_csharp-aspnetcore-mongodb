@@ -30,5 +30,10 @@ namespace Bingo.Api.Models
                 LongName = LongName,
             };
         }
+
+        public override string ToString()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
     }
 }

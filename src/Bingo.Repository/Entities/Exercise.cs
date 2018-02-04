@@ -18,6 +18,11 @@ namespace Bingo.Repository.Entities
             return this.DeepEquals(obj);
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);

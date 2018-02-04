@@ -1,182 +1,166 @@
 ﻿using Bingo.Repository.Entities;
 using Bingo.Repository.Repositories;
+using Bingo.Specification.Helpers;
 using Mongo2Go;
 using MongoDB.Driver;
+using Shouldly;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
 
 namespace Bingo.Specification.RepositoryTests
 {
-    public class ExercisesRepositoryTests
+    [Trait("Repository", nameof(ExercisesRepositoryTests))]
+    public class ExercisesRepositoryTests : IDisposable
     {
-        protected ExercisesRepository ExercisesRepository { get; }
-        
-        internal static MongoDbRunner Runner;
-        internal static IMongoCollection<Exercise> ExercisesCollection;
+        private IMongoDatabase Database { get; }
+        private IMongoCollection<Exercise> Collection { get; }
+        private MongoDbRunner Runner { get; }
+        private MongoClient MongoClient { get; }
+        private ExercisesRepository ExercisesRepository { get; }
 
         public ExercisesRepositoryTests()
         {
-            Runner = MongoDbRunner.Start();
-            MongoClient client = new MongoClient(Runner.ConnectionString);
-            IMongoDatabase database = client.GetDatabase("BingoTest");
-            ExercisesCollection = database.GetCollection<Exercise>("RepoTestColl");
-            
-            ExercisesRepository = new ExercisesRepository(ExercisesCollection);
+            Runner = MongoDbRunner.StartForDebugging();
+            MongoClient = new MongoClient(Runner.ConnectionString);
+            MongoClient.DropDatabase("exercisesTestDatabase");
+            Database = MongoClient.GetDatabase("exercisesTestDatabase");
+            Collection = Database.GetCollection<Exercise>("exercisesTestCollection");
+
+            ExercisesRepository = new ExercisesRepository(Collection);
         }
+
+        public void Dispose()
+        {
+            MongoClient.DropDatabase("exercisesTestDatabase");
+            Runner.Dispose();
+        }
+
+        #region Task<Exercise> ReadOneAsync(string id)
+
+        [Fact]
+        public async void ReadOneAsync_ByValidExerciseId_ReturnsExpectedExercise200()
+        {
+            // Arrange
+            var expectedExercise = TestData.Exercises.ContractExercise;
+            Collection.InsertOne(expectedExercise);
+
+            // Act
+            var result = await ExercisesRepository.ReadOneAsync(expectedExercise.Id);
+
+            // Assert
+            result.ShouldBe(expectedExercise);
+        }
+
+        [Fact]
+        public async void ReadOneAsync_ByNonExistentExerciseId_ReturnsNull()
+        {
+            // Act
+            var result = await ExercisesRepository.ReadOneAsync(Utilities.GetRandomHexString());
+
+            // Assert
+            result.ShouldBeNull();
+        }
+
+        [Fact]
+        public async void ReadOneAsync_ByNon24BitHexExerciseId_ReturnsNull()
+        {
+            // Act
+            var result = await ExercisesRepository.ReadOneAsync("ThisIsNotA24BitHexStringValue");
+
+            // Assert
+            result.ShouldBeNull();
+        }
+
+        #endregion
+
+        #region Task<IEnumerable<Exercise>> ReadAllAsync()
+
+        [Fact]
+        public async void ReadAllAsync_WhenDataExists_ReturnsListOfExpectedExercises()
+        {
+            // Arrange
+            var expectedExercises = TestData.Exercises.ContractExercises;
+            Collection.InsertMany(expectedExercises);
+
+            // Act
+            var result = await ExercisesRepository.ReadAllAsync();
+
+            // Assert
+            result.ShouldBe(expectedExercises);
+        }
+
+        [Fact]
+        public async void ReadAllAsync_WhenCollectionIsEmpty_ReturnsListOfExpectedExercises()
+        {
+            // Act
+            var result = await ExercisesRepository.ReadAllAsync();
+
+            // Assert
+            result.ShouldBeOfType(typeof(List<Exercise>));
+            result.ShouldBeEmpty();
+        }
+
+        #endregion
+
+        #region Task<Exercise> CreateOneAsync(Exercise exercise)
+
+        [Fact]
+        public async void CreateOneAsync_ReturnsCreatedObjectWithId_WhenObjectIsInserted()
+        {
+            // Arrange
+            var exerciseToCreate = TestData.Exercises.ExerciseWithoutId;
+
+            // Act
+            var result = await ExercisesRepository.CreateOneAsync(exerciseToCreate);
+
+            // Assert
+            result.Id.ShouldNotBeNull();
+            result.ShouldBe(exerciseToCreate);
+        }
+
+        #endregion
+
+        #region Task<Exercise> DeleteOneAsync(string id)
+
+        [Fact]
+        public async void DeleteOneAsync_ByValidExerciseId_ReturnsDeletedObject()
+        {
+            // Arrange
+            var exercises = TestData.Exercises.ContractExercises;
+            var exerciseToDelete = exercises.First();
+            Collection.InsertMany(exercises);
+
+            // Act
+            var result = await ExercisesRepository.DeleteOneAsync(exerciseToDelete.Id);
+
+            // Assert
+            result.ShouldBe(exerciseToDelete);
+            Collection.ShouldNotContain(exerciseToDelete);
+            Collection.ShouldNotBeEmpty();
+        }
+
+        [Fact]
+        public async void DeleteOneAsync_ByNonExistentId_ReturnsNull()
+        {
+            // Act
+            var result = await ExercisesRepository.DeleteOneAsync(Utilities.GetRandomHexString());
+
+            // Assert
+            result.ShouldBeNull();
+        }
+
+        [Fact]
+        public async void DeleteOneAsync_ByNon24BitHexId_ReturnsNull()
+        {
+            // Act
+            var result = await ExercisesRepository.DeleteOneAsync("ThisIsNonHex");
+
+            // Asssert
+            result.ShouldBeNull();
+        }
+
+        #endregion
     }
-    /*
-    public class ReadAllAsync : ExercisesRepositoryTests
-    {
-       [Fact]
-       public async void Should_Return_One_Exercise_When_Collection_Returns_Exercise()
-       {
-           // Arrange
-           var expectedExercises = TestData.Exercises.ContractExercises;
-           await ExercisesCollection.InsertManyAsync(expectedExercises);
-
-           // Act
-           var result = await ExercisesRepository.ReadAllAsync();
-
-
-           var listResults = Assert.IsType<List<Exercise>>(result);
-           Assert.Equal(expectedExercises, listResults);
-       }
-   }
-
-   public class ReadAllAsync : ExercisesRepositoryTests
-   {
-       [Fact]
-       public async void Should_Return_Exercises_When_Repository_Returns_Exercises()
-       {
-           // Arrange
-           var expectedExercises = TestData.Exercises.ContractExercises;
-           ExercisesRepositoryMock
-               .Setup(x => x.ReadAllAsync())
-               .ReturnsAsync(expectedExercises);
-
-           // Act
-           var result = await ExercisesService.ReadAllAsync();
-
-           // Assert
-           Assert.Same(expectedExercises, result);
-       }
-
-       [Fact]
-       public async void Should_Return_Empty_Array_When_Repository_Return_Empty_Array()
-       {
-           // Arrange
-           var expectedExercises = new List<Exercise>();
-           ExercisesRepositoryMock
-               .Setup(x => x.ReadAllAsync())
-               .ReturnsAsync(expectedExercises);
-
-           // Act
-           var result = await ExercisesService.ReadAllAsync();
-
-           // Assert
-           Assert.Same(expectedExercises, result);
-       }
-   }
-
-   public class ReadOneAsync : ExercisesRepositoryTests
-   {
-       [Fact]
-       public async void Should_Return_Exercise_When_Service_Returns_Exercise()
-       {
-           // Arrange
-           var expectedExercise = TestData.Exercises.ContractExercise;
-           ExercisesRepositoryMock
-               .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
-               .ReturnsAsync(expectedExercise);
-
-           // Act
-           var result = await ExercisesService.ReadOneAsync("123021");
-
-           // Assert
-           Assert.Same(expectedExercise, result);
-       }
-
-       [Fact]
-       public async void Should_Return_Null_When_Service_Returns_Null()
-       {
-           // Arrange
-           ExercisesRepositoryMock
-               .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
-               .ReturnsAsync((Exercise)null);
-
-           // Act
-           var result = await ExercisesService.ReadOneAsync("123021");
-
-           // Assert
-           Assert.Null(result);
-       }
-   }
-
-   public class CreateOneAsync : ExercisesRepositoryTests
-   {
-       [Fact]
-       public async void Should_Return_Created_Exercise_When_Repository_Returns_Exercise()
-       {
-           // Arrange
-           var exerciseToCreate = TestData.Exercises.ExerciseWithoutId;
-           var createdExercise = TestData.Exercises.ContractExercisePostDtoResponse;
-           ExercisesRepositoryMock
-               .Setup(x => x.CreateOneAsync(It.IsAny<Exercise>()))
-               .ReturnsAsync(createdExercise);
-
-           // Act
-           var result = await ExercisesService.CreateOneAsync(exerciseToCreate);
-
-           // Assert
-           Assert.Same(createdExercise, result);
-       }
-
-       [Fact]
-       public async void Should_Return_Null_When_Repository_Returns_Null()
-       {
-           // Arrange
-           var exerciseToCreate = TestData.Exercises.ExerciseWithoutId;
-           ExercisesRepositoryMock
-               .Setup(x => x.CreateOneAsync(It.IsAny<Exercise>()))
-               .ReturnsAsync((Exercise)null);
-
-           // Act
-           var result = await ExercisesService.CreateOneAsync(exerciseToCreate);
-
-           // Assert
-           Assert.Null(result);
-       }
-   }
-
-   public class DeleteOneAsync : ExercisesRepositoryTests
-   {
-       [Fact]
-       public async void Should_Return_Exercise_When_Repository_Returns_Deleted_Exercise()
-       {
-           // Arrange
-           var deletedExercise = TestData.Exercises.ContractExercise;
-           ExercisesRepositoryMock
-               .Setup(x => x.DeleteOneAsync(It.IsAny<string>()))
-               .ReturnsAsync(deletedExercise);
-
-           // Act
-           var result = await ExercisesService.DeleteOneAsync("123021");
-
-           // Assert
-           Assert.Same(deletedExercise, result);
-       }
-
-       [Fact]
-       public async void Should_Return_Null_When_Repository_Returns_Null()
-       {
-           // Arrange
-           ExercisesRepositoryMock
-               .Setup(x => x.DeleteOneAsync(It.IsAny<string>()))
-               .ReturnsAsync((Exercise)null);
-
-           // Act
-           var result = await ExercisesService.DeleteOneAsync("123021");
-
-           // Assert
-           Assert.Null(result);
-       }
-   }*/
 }

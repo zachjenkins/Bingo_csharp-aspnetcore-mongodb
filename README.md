@@ -35,11 +35,13 @@ The following things can be done in any order!
 
     From the directory .\Bingo_csharp-aspnetcore-mongodb\src\Bingo.Api >> `dotnet run`
 
-## Running Tests
+## Running Unit and Integration Tests
 
-    **Mongo does not need to be deployed for this to work**
+    **Mongo does not need to be deployed for this to work. Neither does ASP.NET. Pretty much nothing does.**
 
     1. Run them in Visual Studio!
     1. If you do not have VS, run tests from command-line with the following:
 
     From the root of the project >> `dotnet test`
+
+	Framework dependencies such as mongoDb and ASP.NET core are initialized in-memory, for the lifetime of the test execution. No setup required.

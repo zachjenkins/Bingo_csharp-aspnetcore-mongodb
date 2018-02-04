@@ -17,16 +17,12 @@ namespace Bingo.Repository.Repositories
 
         public async Task<Exercise> ReadOneAsync(string id)
         {
-            try
-            {
-                var filter = Builders<Exercise>.Filter.Eq(ex => ex.Id, id);
-                var result = await _collection.FindAsync(filter);
-                return result.FirstOrDefault();
-            }
-            catch
-            {
+            if (id.IsNot24BitHex())
                 return null;
-            }
+
+            var filter = Builders<Exercise>.Filter.Eq(ex => ex.Id, id);
+            var result = await _collection.FindAsync(filter);
+            return result.FirstOrDefault();
         }
 
         public async Task<IEnumerable<Exercise>> ReadAllAsync()
@@ -38,17 +34,9 @@ namespace Bingo.Repository.Repositories
         
         public async Task<Exercise> CreateOneAsync(Exercise exercise)
         {
-            try
-            {
-                await _collection.InsertOneAsync(exercise);
+            await _collection.InsertOneAsync(exercise);
 
-                return (exercise.Id == null) ? null : exercise;
-            }
-            catch
-            {
-                return null;
-            }
-            
+            return (exercise.Id == null) ? null : exercise;
         }
 
         public async Task<Exercise> DeleteOneAsync(string id)
@@ -57,7 +45,7 @@ namespace Bingo.Repository.Repositories
 
             if (exerciseToDelete == null)
                 return null;
-
+                
             var filter = Builders<Exercise>.Filter.Eq(ex => ex.Id, id);
             await _collection.DeleteOneAsync(filter);
 

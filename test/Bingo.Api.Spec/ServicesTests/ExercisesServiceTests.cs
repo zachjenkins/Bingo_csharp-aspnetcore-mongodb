@@ -19,6 +19,8 @@ namespace Bingo.Specification.ServicesTests
             ExercisesService = new ExercisesService(ExercisesRepositoryMock.Object);
         }
 
+        #region Task<IEnumerable<Exercise>> ReadAllAsync()
+
         [Fact]
         public async void ReadAllAsync_ReturnsExercises_WhenRepositoryReturnsExercises()
         {
@@ -51,6 +53,10 @@ namespace Bingo.Specification.ServicesTests
             Assert.Same(expectedExercises, result);
         }
 
+        #endregion
+
+        #region Task<Exercise> ReadOneAsync(string id)
+        
         [Fact]
         public async void ReadOneAsync_ReturnsExercise_WhenRepositoryReturnsExercise()
         {
@@ -81,7 +87,11 @@ namespace Bingo.Specification.ServicesTests
             // Assert
             Assert.Null(result);
         }
-   
+
+        #endregion
+
+        #region Task<Exercise> CreateOneAsync(Exercise exerciseToCreate)
+
         [Fact]
         public async void CreateOneAsync_ReturnsCreatedExercise_WhenServiceReturnsExercise()
         {
@@ -115,6 +125,10 @@ namespace Bingo.Specification.ServicesTests
             Assert.Null(result);
         }
 
+        #endregion
+
+        #region Task<Exercise> DeleteOneAsync(string id)
+
         [Fact]
         public async void DeleteOneAsync_ReturnsExercise_WhenRepositoryReturnsExercise()
         {
@@ -145,5 +159,7 @@ namespace Bingo.Specification.ServicesTests
             // Assert
             Assert.Null(result);
         }
+
+        #endregion
     }
 }

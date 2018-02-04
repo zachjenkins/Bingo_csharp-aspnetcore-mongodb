@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Bingo.Specification.IntegrationTests
+namespace Bingo.Specification.IntegrationTests.Support
 {
     public class TestStartup
     {

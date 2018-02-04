@@ -1,4 +1,5 @@
-﻿using Bingo.Repository.Contracts;
+﻿using System.Diagnostics.CodeAnalysis;
+using Bingo.Repository.Contracts;
 using Bingo.Repository.Entities;
 using Bingo.Repository.Repositories;
 using Bingo.Services.Contracts;
@@ -12,6 +13,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Bingo.Api
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         // This method gets called by the runtime. Use this method to add services to the container.

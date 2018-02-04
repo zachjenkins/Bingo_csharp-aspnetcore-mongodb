@@ -22,5 +22,15 @@ namespace Bingo.Repository
             };
             return compareLogic.Compare(actual, expected).AreEqual;
         }
+
+        public static bool Is24BitHex(this string actual)
+        {
+            return System.Text.RegularExpressions.Regex.IsMatch(actual, @"\A\b[0-9a-fA-F]+\b\Z");
+        }
+
+        public static bool IsNot24BitHex(this string actual)
+        {
+            return !Is24BitHex(actual);
+        }
     }
 }

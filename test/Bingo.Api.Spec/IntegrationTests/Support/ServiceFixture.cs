@@ -1,5 +1,4 @@
 ﻿using Bingo.Repository.Entities;
-using Bingo.Specification.IntegrationTests.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
-namespace Bingo.Specification.IntegrationTests.Fixtures
+namespace Bingo.Specification.IntegrationTests.Support
 {
     public class ServiceFixture : IDisposable
     {

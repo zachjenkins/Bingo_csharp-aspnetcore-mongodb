@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using Shouldly;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Bingo.Specification.Helpers
 {
@@ -38,6 +39,27 @@ namespace Bingo.Specification.Helpers
             var actual = SearchAll(collection);
 
             actual.Count.ShouldBeGreaterThan(0);
+        }
+
+        public static void ShouldNotHaveNullDataMembers<T>(this object obj)
+        {
+            var result = typeof(T).GetProperties()
+                .Select(prop => prop.GetValue(obj, null))
+                .Where(val => val == null)
+                .ToList();
+
+            result.Count.ShouldBe(0, $"{typeof(object)} contains empty values: \n{obj.ToString()}");
+        }
+
+        public static void ShouldNotHaveNullDataMembersExcept<T>(this object obj, params string[] propertyNames)
+        {
+            var properties = typeof(T).GetProperties();
+
+            foreach(System.Reflection.PropertyInfo prop in properties)
+            {
+                if (!propertyNames.Contains(prop.Name))
+                    prop.GetValue(obj, null).ShouldNotBeNull($"{typeof(object)} contains empty values: \n{obj.ToString()}");           
+            }
         }
     }
 }

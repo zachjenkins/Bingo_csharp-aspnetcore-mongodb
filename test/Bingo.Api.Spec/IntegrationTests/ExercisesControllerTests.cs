@@ -1,5 +1,5 @@
 ﻿using Bingo.Specification.Helpers;
-using Bingo.Specification.IntegrationTests.Fixtures;
+using Bingo.Specification.IntegrationTests.Support;
 using Bingo.Specification.TestData;
 using Shouldly;
 using System.Net;

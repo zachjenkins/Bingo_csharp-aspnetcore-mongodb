@@ -20,6 +20,8 @@ namespace Bingo.Specification.ControllerTests
             ExercisesController = new ExercisesController(ExercisesServiceMock.Object);
         }
 
+        #region Task<IActionResult> GetManyAsync()
+
         [Fact]
         public async void GetManyAsync_ReturnsOkObjectResult_WhenServiceReturnsExercises()
         {
@@ -53,7 +55,11 @@ namespace Bingo.Specification.ControllerTests
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Same(expectedExercises, okResult.Value);
         }
-   
+
+        #endregion
+
+        #region Task<IActionResult> GetOneByIdAsync(string id)
+
         [Fact]
         public async void GetOneByIdAsync_ReturnsOkObjectResult_WhenServiceReturnsExercise()
         {
@@ -85,7 +91,11 @@ namespace Bingo.Specification.ControllerTests
             // Assert
             Assert.IsType<NotFoundResult>(result);
         }
-   
+
+        #endregion
+
+        #region Task<IActionResult> PostOneAsync([FromBody] PostExerciseDto exerciseDto)
+
         [Fact]
         public async void PostOneAsync_ReturnsCreatedAtActionResult_WhenServiceReturnsExercise()
         {
@@ -133,7 +143,11 @@ namespace Bingo.Specification.ControllerTests
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);
         }
-    
+
+        #endregion
+
+        #region Task<IActionResult> DeleteOneByIdAsync(string id)
+
         [Fact]
         public async void DeleteOneByIdAsync_ReturnsNoContentResult_WhenServiceReturnsDeletedExercise()
         {
@@ -164,5 +178,7 @@ namespace Bingo.Specification.ControllerTests
             // Assert
             Assert.IsType<NoContentResult>(result);
         }
+
+        #endregion
     }
 }
