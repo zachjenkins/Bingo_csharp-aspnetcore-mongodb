@@ -54,7 +54,16 @@ namespace Bingo.Api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Bingo API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info
+                {
+                    Title = "Bingo API",
+                    Version = "v1",
+                    Description = "Bingo Exercise Science API",
+                    Contact = new Contact
+                    {
+                        Name = "Zach Jenkins"
+                    }
+                });
             });
         }
 

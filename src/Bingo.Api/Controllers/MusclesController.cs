@@ -1,5 +1,6 @@
 ﻿using Bingo.Api.Models;
 using Bingo.Services.Contracts;
+using Bingo.Repository.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,7 +19,8 @@ namespace Bingo.Api.Controllers
         }
 
         [HttpGet(Name = "Get All Muscles")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Muscle))]
         public async Task<IActionResult> GetManyAsync()
         {
             var allMuscles = await _musclesService.ReadAllAsync();
@@ -26,12 +28,13 @@ namespace Bingo.Api.Controllers
             return Ok(allMuscles);
         }
         
-        [HttpGet("{id}", Name = "Get Muscle by Id")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpGet("{muscleId}", Name = "Get Muscle by Id")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Muscle))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetOneByIdAsync(string id)
+        public async Task<IActionResult> GetOneByIdAsync(string muscleId)
         {
-            var muscle = await _musclesService.ReadOneAsync(id);
+            var muscle = await _musclesService.ReadOneAsync(muscleId);
             
             if (muscle == null)
                 return NotFound();
@@ -40,7 +43,7 @@ namespace Bingo.Api.Controllers
         }
 
         [HttpPost(Name = "Post Muscle")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Muscle))]
         public async Task<IActionResult> PostOneAsync([FromBody] PostMuscleDto muscleDto)
         {
             if (!ModelState.IsValid)
@@ -54,12 +57,11 @@ namespace Bingo.Api.Controllers
             return StatusCode(201, postedMuscle);
         }
 
-        [HttpDelete("{id}", Name = "Delete Muscle")]
+        [HttpDelete("{muscleId}", Name = "Delete Muscle")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteOneByIdAsync(string id)
+        public async Task<IActionResult> DeleteOneByIdAsync(string muscleId)
         {
-            await _musclesService.DeleteOneAsync(id);
+            await _musclesService.DeleteOneAsync(muscleId);
             
             return NoContent();
         }

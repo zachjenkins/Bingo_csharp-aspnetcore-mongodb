@@ -1,5 +1,6 @@
 ﻿using Bingo.Api.Models;
 using Bingo.Services.Contracts;
+using Bingo.Repository.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,7 +19,8 @@ namespace Bingo.Api.Controllers
         }
 
         [HttpGet(Name = "Get All Activations")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Activation))]
         public async Task<IActionResult> GetManyAsync()
         {
             var allActivations = await _activationsService.ReadAllAsync();
@@ -26,12 +28,13 @@ namespace Bingo.Api.Controllers
             return Ok(allActivations);
         }
         
-        [HttpGet("{id}", Name = "Get Activation by Id")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpGet("{activationId}", Name = "Get Activation by Id")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Activation))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetOneByIdAsync(string id)
+        public async Task<IActionResult> GetOneByIdAsync(string activationId)
         {
-            var activation = await _activationsService.ReadOneAsync(id);
+            var activation = await _activationsService.ReadOneAsync(activationId);
             
             if (activation == null)
                 return NotFound();
@@ -40,7 +43,9 @@ namespace Bingo.Api.Controllers
         }
 
         [HttpPost(Name = "Post Activation")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Activation))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PostOneAsync([FromBody] PostActivationDto activationDto)
         {
             if (!ModelState.IsValid)
@@ -54,12 +59,11 @@ namespace Bingo.Api.Controllers
             return StatusCode(201, postedActivation);
         }
 
-        [HttpDelete("{id}", Name = "Delete Activation")]
+        [HttpDelete("{activationId}", Name = "Delete Activation")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteOneByIdAsync(string id)
+        public async Task<IActionResult> DeleteOneByIdAsync(string activationId)
         {
-            await _activationsService.DeleteOneAsync(id);
+            await _activationsService.DeleteOneAsync(activationId);
             
             return NoContent();
         }
