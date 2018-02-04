@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Swashbuckle.AspNetCore.Swagger;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Bingo.Api
@@ -50,6 +51,11 @@ namespace Bingo.Api
                 settings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
                 return settings;
             });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Bingo API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +67,12 @@ namespace Bingo.Api
             }
           
             app.UseMvc();
-             
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bingo API");
+            });
         }
 
         
