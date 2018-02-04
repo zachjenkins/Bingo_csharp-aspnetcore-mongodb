@@ -22,18 +22,20 @@ namespace Bingo.Specification.TestData
             RegionId = "123456789042767678589743"
         };
 
+        public static Muscle ContractMuscle2 => new Muscle
+        {
+            Id = "052343678961234567894578",
+            Name = "Biceps",
+            LongName = "Biceps Brachialis",
+            ShortName = "Bi's",
+            GroupId = "72304987150894721597893",
+            RegionId = "87584901692645925672935"
+        };
+
         public static List<Muscle> ContractMuscles => new List<Muscle>
         {
             ContractMuscle,
-            new Muscle
-            {
-                Id = "052343678961234567894578",
-                Name = "Biceps",
-                LongName = "Biceps Brachialis",
-                ShortName = "Bi's",
-                GroupId = "72304987150894721597893",
-                RegionId = "87584901692645925672935"
-            }
+            ContractMuscle2
         };
 
         public static PostMuscleDto ContractMusclePostDto => new PostMuscleDto

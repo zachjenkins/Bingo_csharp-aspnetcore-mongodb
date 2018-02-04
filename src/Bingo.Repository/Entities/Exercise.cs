@@ -1,10 +1,9 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Newtonsoft.Json;
 
 namespace Bingo.Repository.Entities
 {
-    public class Exercise
+    public class Exercise : BingoEntity
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -13,19 +12,16 @@ namespace Bingo.Repository.Entities
         public string ShortName { get; set; }
         public string LongName { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            return this.DeepEquals(obj);
-        }
+        public ExerciseTypeEnum ExerciseType { get; set; }
+    }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
+    public enum ExerciseTypeEnum
+    {
+        Strength,
+        Compound,
+        Simple,
+        Cardio,
+        Athletic,
+        Plyometric
     }
 }

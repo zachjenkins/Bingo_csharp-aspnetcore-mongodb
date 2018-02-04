@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Bingo.Api.Models
 {
-    public class PostMuscleDto : IValidatableObject
+    public class PostMuscleDto : RequestObject
     {
         [Required, MaxLength(30)]
         public string Name { get; set; }
@@ -45,11 +45,6 @@ namespace Bingo.Api.Models
                 GroupId = GroupId,
                 RegionId = RegionId
             };
-        }
-
-        public override string ToString()
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     }
 }

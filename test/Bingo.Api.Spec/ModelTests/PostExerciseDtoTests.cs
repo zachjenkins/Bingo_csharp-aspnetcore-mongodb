@@ -8,8 +8,8 @@ using Xunit;
 
 namespace Bingo.Specification.ModelTests
 {
-    [Trait("Api", nameof(MusclePostDtoTests))]
-    public class MusclePostDtoTests
+    [Trait("Api", nameof(PostExerciseDtoTests))]
+    public class PostExerciseDtoTests
     {
         #region IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 
@@ -17,7 +17,7 @@ namespace Bingo.Specification.ModelTests
         public void Validate_ReturnsNoErrors_WhenValidateMethodIsCalledWithValidObject()
         {
             // Arrange
-            var postDto = TestData.Muscles.ContractMusclePostDto;
+            var postDto = TestData.Exercises.ContractExercisePostDto;
             var context = new ValidationContext(postDto);
 
             // Act
@@ -27,61 +27,25 @@ namespace Bingo.Specification.ModelTests
             results.ShouldBeEmpty();
         }
 
-        [Fact]
-        public void Validate_ReturnsError_WhenGroupIdIsNot24BitHexString()
-        {
-            // Arrange
-            var postDto = TestData.Muscles.ContractMusclePostDto;
-            var context = new ValidationContext(postDto);
-            postDto.GroupId = "Non24BitHex";
-
-            // Act
-            var results = postDto.Validate(context);
-
-            // Assert
-            results.Count().ShouldBe(1);
-            results.First().ErrorMessage.ShouldContain(nameof(postDto.GroupId));
-            results.First().MemberNames.ShouldContain(nameof(postDto.GroupId));
-        }
-
-        [Fact]
-        public void Validate_ReturnsError_WhenRegionIdIsNot24BitHexString()
-        {
-            // Arrange
-            var postDto = TestData.Muscles.ContractMusclePostDto;
-            var context = new ValidationContext(postDto);
-            postDto.RegionId = "Non24BitHex";
-
-            // Act
-            var results = postDto.Validate(context);
-
-            // Assert
-            results.Count().ShouldBe(1);
-            results.First().ErrorMessage.ShouldContain(nameof(postDto.RegionId));
-            results.First().MemberNames.ShouldContain(nameof(postDto.RegionId));
-        }
-
         #endregion
 
-        #region Muscle ToMuscle()
+        #region Exercise ToExercise()
 
         [Fact]
-        public void ToMuscle_ConvertsDtoToMuscleEntity_WhenValid()
+        public void ToExercise_ConvertsDtoToExerciseEntity_WhenValid()
         {
             // Arrange - Assure Test Data is up to date w/o null values
-            var postDto = TestData.Muscles.ContractMusclePostDto;
-            postDto.ShouldNotHaveNullDataMembers<PostMuscleDto>();
+            var postDto = TestData.Exercises.ContractExercisePostDto;
+            postDto.ShouldNotHaveNullDataMembers<PostExerciseDto>();
 
             // Act
-            var muscle = postDto.ToMuscle();
+            var exercise = postDto.ToExercise();
             
-            muscle.Id.ShouldBeNull();
-            muscle.Name.ShouldBe(postDto.Name);
-            muscle.ShortName.ShouldBe(postDto.ShortName);
-            muscle.LongName.ShouldBe(postDto.LongName);
-            muscle.GroupId.ShouldBe(postDto.GroupId);
-            muscle.RegionId.ShouldBe(postDto.RegionId);
-            muscle.ShouldNotHaveNullDataMembersExcept<Muscle>(nameof(muscle.Id));
+            exercise.Id.ShouldBeNull();
+            exercise.Name.ShouldBe(postDto.Name);
+            exercise.ShortName.ShouldBe(postDto.ShortName);
+            exercise.LongName.ShouldBe(postDto.LongName);
+            exercise.ShouldNotHaveNullDataMembersExcept<Exercise>(nameof(exercise.Id));
         }
 
         #endregion
@@ -92,7 +56,7 @@ namespace Bingo.Specification.ModelTests
         public void ModelValidation_ReturnsNoErrors_WhenModelStateIsValid()
         {
             // Arrange
-            var postDto = TestData.Muscles.ContractMusclePostDto;
+            var postDto = TestData.Exercises.ContractExercisePostDto;
 
             // Act
             var modelValidation = AspHelpers.ValidateDto(postDto);
@@ -108,7 +72,7 @@ namespace Bingo.Specification.ModelTests
         public void ModelValidation_RequiresName_WhenNameIsNullOrWhitespace(string name)
         {
             // Arrange
-            var postDto = new PostMuscleDto { Name = name };
+            var postDto = new PostExerciseDto { Name = name };
 
             // Act
             var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.Name));
@@ -125,7 +89,7 @@ namespace Bingo.Specification.ModelTests
         public void ModelValidation_RequiresShortName_WhenShortNameIsNullOrWhitespace(string shortName)
         {
             // Arrange
-            var postDto = new PostMuscleDto { ShortName = shortName };
+            var postDto = new PostExerciseDto { ShortName = shortName };
 
             // Act
             var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.ShortName));
@@ -142,7 +106,7 @@ namespace Bingo.Specification.ModelTests
         public void ModelValidation_RequiresLongName_WhenLongNameIsNullOrWhitespace(string longName)
         {
             // Arrange
-            var postDto = new PostMuscleDto { LongName = longName };
+            var postDto = new PostExerciseDto { LongName = longName };
 
             // Act
             var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.LongName));
@@ -156,7 +120,7 @@ namespace Bingo.Specification.ModelTests
         public void ModelValidation_RequiresMaxLenghtOf30_ForNameProperty()
         {
             // Arrange
-            var postDto = new PostMuscleDto { Name = new string('a', 31) };
+            var postDto = new PostExerciseDto { Name = new string('a', 31) };
           
             // Act
             var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.Name));
@@ -171,7 +135,7 @@ namespace Bingo.Specification.ModelTests
         public void ModelValidation_RequiresMaxLenghtOf20_ForShortNameProperty()
         {
             // Arrange
-            var postDto = new PostMuscleDto { ShortName = new string('a', 21) };
+            var postDto = new PostExerciseDto { ShortName = new string('a', 21) };
 
             // Act
             var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.ShortName));
@@ -186,7 +150,7 @@ namespace Bingo.Specification.ModelTests
         public void ModelValidation_RequiresMaxLenghtOf30_ForLongNameProperty()
         {
             // Arrange
-            var postDto = new PostMuscleDto { LongName = new string('a', 61) };
+            var postDto = new PostExerciseDto { LongName = new string('a', 61) };
 
             // Act
             var modelValidation = AspHelpers.ValidateDtoProperty(postDto, nameof(postDto.LongName));

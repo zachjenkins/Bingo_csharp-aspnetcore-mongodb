@@ -24,9 +24,11 @@ namespace Bingo.Api
 
             services.AddTransient<IExercisesService, ExercisesService>();
             services.AddTransient<IMusclesService, MusclesService>();
-
+            services.AddTransient<IActivationsService, ActivationsService>();
+            
             services.AddTransient<IExercisesRepository, ExercisesRepository>();
             services.AddTransient<IMusclesRepository, MusclesRepository>();
+            services.AddTransient<IActivationsRepository, ActivationsRepository>();
 
             IMongoClient client = new MongoClient(@"mongodb://localhost:27017?connectionTimeout=30000");
             var database = client.GetDatabase("bingo");
@@ -36,6 +38,9 @@ namespace Bingo.Api
 
             IMongoCollection<Muscle> musclesCollection = database.GetCollection<Muscle>("muscles");
             services.AddSingleton(musclesCollection);
+
+            IMongoCollection<Activation> activationsCollection = database.GetCollection<Activation>("activations");
+            services.AddSingleton(activationsCollection);
 
             services.AddMvc().AddJsonOptions(opt => opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 

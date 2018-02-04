@@ -15,21 +15,23 @@ namespace Bingo.Specification.TestData
         public static Exercise ContractExercise => new Exercise
         {
             Id = "012345678901234567894542",
-            Name = "Overhead Press",
-            LongName = "Overhead Barbell Press",
-            ShortName = "Press"
+            Name = "Bench Press",
+            LongName = "Barbell Bench Press",
+            ShortName = "Bench"
+        };
+
+        public static Exercise ContractExercise2 => new Exercise
+        {
+            Id = "012345678901234567894578",
+            Name = "Barbell Curls",
+            LongName = "EZ Bar Curls",
+            ShortName = "Curls"
         };
 
         public static List<Exercise> ContractExercises => new List<Exercise>
         {
             ContractExercise,
-            new Exercise
-            {
-                Id = "012345678901234567894578",
-                Name = "Barbell Curls",
-                LongName = "EZ Bar Curls",
-                ShortName = "Curls"
-            }
+            ContractExercise2
         };
 
         public static PostExerciseDto ContractExercisePostDto => new PostExerciseDto

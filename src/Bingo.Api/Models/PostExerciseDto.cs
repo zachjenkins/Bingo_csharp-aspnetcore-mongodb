@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Bingo.Api.Models
 {
-    public class PostExerciseDto : IValidatableObject
+    public class PostExerciseDto : RequestObject
     {
         [Required, MaxLength(30)]
         public string Name { get; set; }
@@ -17,7 +17,6 @@ namespace Bingo.Api.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            // Model Business logic must go here!
             return new List<ValidationResult>();
         }
         

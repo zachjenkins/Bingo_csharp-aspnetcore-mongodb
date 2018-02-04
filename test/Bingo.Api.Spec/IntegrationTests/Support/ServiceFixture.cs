@@ -39,6 +39,7 @@ namespace Bingo.Specification.IntegrationTests.Support
             Database = MongoClient.GetDatabase("BingoTestDatabase");
             ExercisesCollection = Database.GetCollection<Exercise>("exercises");
             MusclesCollection = Database.GetCollection<Muscle>("muscles");
+            ActivationsCollection = Database.GetCollection<Activation>("activations");
         }
 
         public void InitializeWebHost()
@@ -54,6 +55,7 @@ namespace Bingo.Specification.IntegrationTests.Support
         {
             services.AddSingleton(ExercisesCollection);
             services.AddSingleton(MusclesCollection);
+            services.AddSingleton(ActivationsCollection);
         }
 
         public void InitializeApiInterface()
@@ -68,11 +70,15 @@ namespace Bingo.Specification.IntegrationTests.Support
 
             IEnumerable<Muscle> muscles = TestData.Muscles.GetAllMusclesForCollection();
             MusclesCollection.InsertMany(muscles);
+
+            IEnumerable<Activation> activations = TestData.Activations.GetAllActivationsForCollection();
+            ActivationsCollection.InsertMany(activations);
         }
 
         public IBingoApi Api { get; set; }
         public IMongoCollection<Exercise> ExercisesCollection { get; set; }
         public IMongoCollection<Muscle> MusclesCollection { get; set; }
+        public IMongoCollection<Activation> ActivationsCollection { get; set; }
 
         private MongoDbRunner Runner { get; set; }
         private MongoClient MongoClient { get; set; }

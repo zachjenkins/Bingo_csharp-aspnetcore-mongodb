@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Bingo.Repository.Entities
 {
-    public class Muscle
+    public class Muscle : BingoEntity
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

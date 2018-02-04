@@ -69,6 +69,34 @@ namespace Bingo.Specification.ControllerTests
             services.ToList().ShouldContain(service => service.ServiceType == typeof(IMusclesService));
         }
 
+        [Fact]
+        public void ConfigureServices_ShouldRegisterActivationsRepository_WhenCalled()
+        {
+            // Arrange
+            var startup = new Startup();
+            var services = new ServiceCollection();
+
+            // Act
+            startup.ConfigureServices(services);
+
+            // Assert
+            services.ToList().ShouldContain(service => service.ServiceType == typeof(IActivationsRepository));
+        }
+
+        [Fact]
+        public void ConfigureServices_ShouldRegisterActivationsService_WhenCalled()
+        {
+            // Arrange
+            var startup = new Startup();
+            var services = new ServiceCollection();
+
+            // Act
+            startup.ConfigureServices(services);
+
+            // Assert
+            services.ToList().ShouldContain(service => service.ServiceType == typeof(IActivationsService));
+        }
+
         #endregion
     }
 }
