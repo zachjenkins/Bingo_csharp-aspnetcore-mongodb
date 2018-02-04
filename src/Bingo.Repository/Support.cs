@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Bingo.Repository
 {
@@ -25,7 +26,7 @@ namespace Bingo.Repository
 
         public static bool Is24BitHex(this string actual)
         {
-            return System.Text.RegularExpressions.Regex.IsMatch(actual, @"\A\b[0-9a-fA-F]+\b\Z");
+            return Regex.IsMatch(actual, @"\A\b[0-9a-fA-F]+\b\Z") && actual.Length == 24;
         }
 
         public static bool IsNot24BitHex(this string actual)
