@@ -1,14 +1,14 @@
 using Bingo.Api.Models;
+using Bingo.Repository.Entities;
 using Bingo.Specification.Helpers;
 using Shouldly;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Bingo.Repository.Entities;
 using Xunit;
 
 namespace Bingo.Specification.ModelTests
 {
-    [Trait("Model", nameof(ExercisePostDtoTests))]
+    [Trait("Api", nameof(ExercisePostDtoTests))]
     public class ExercisePostDtoTests
     {
         #region IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -43,7 +43,7 @@ namespace Bingo.Specification.ModelTests
             
             exercise.Id.ShouldBeNull();
             exercise.Name.ShouldBe(postDto.Name);
-            exercise.ShortName.ShouldBe(postDto.Name);
+            exercise.ShortName.ShouldBe(postDto.ShortName);
             exercise.LongName.ShouldBe(postDto.LongName);
             exercise.ShouldNotHaveNullDataMembersExcept<Exercise>(nameof(exercise.Id));
         }

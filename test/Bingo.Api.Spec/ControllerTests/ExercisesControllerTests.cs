@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Bingo.Specification.ControllerTests
 {
-    [Trait("Controller", nameof(ExercisesControllerTests))]
+    [Trait("Api", nameof(ExercisesControllerTests))]
     public class ExercisesControllerTests
     {
         protected ExercisesController ExercisesController { get; }

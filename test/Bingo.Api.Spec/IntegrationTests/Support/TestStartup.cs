@@ -18,9 +18,11 @@ namespace Bingo.Specification.IntegrationTests.Support
         {
             // Register Services
             services.AddTransient<IExercisesService, ExercisesService>();
+            services.AddTransient<IMusclesService, MusclesService>();
 
             // Register Repositories
             services.AddTransient<IExercisesRepository, ExercisesRepository>();
+            services.AddTransient<IMusclesRepository, MusclesRepository>();
 
             // Settings
             services.AddMvc();

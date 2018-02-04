@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using Bingo.Api.Models;
 using Bingo.Repository.Entities;
 using RestEase;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Bingo.Api.Models;
 
 namespace Bingo.Specification.IntegrationTests.Support
 {
     [AllowAnyStatusCode]
-    public interface IExercisesApi
+    public interface IBingoApi
     {
+        #region Exercises
+
         [Get("api/exercises")]
         Task<Response<List<Exercise>>> GetExercises();
 
@@ -20,5 +22,23 @@ namespace Bingo.Specification.IntegrationTests.Support
 
         [Delete("api/exercises/{id}")]
         Task<Response<string>> DeleteExerciseById([Path] string id);
+
+        #endregion
+
+        #region Muscles Controller
+
+        [Get("api/muscles")]
+        Task<Response<List<Muscle>>> GetMuscles();
+
+        [Get("api/muscles/{id}")]
+        Task<Response<Muscle>> GetMuscleById([Path] string id);
+
+        [Post("api/muscles")]
+        Task<Response<Muscle>> PostMuscle([Body] PostMuscleDto postDto);
+
+        [Delete("api/muscles/{id}")]
+        Task<Response<string>> DeleteMuscleById([Path] string id);
+
+        #endregion
     }
 }

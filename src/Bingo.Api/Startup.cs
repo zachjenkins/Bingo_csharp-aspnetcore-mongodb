@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Bingo.Repository.Contracts;
+﻿using Bingo.Repository.Contracts;
 using Bingo.Repository.Entities;
 using Bingo.Repository.Repositories;
 using Bingo.Services.Contracts;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Bingo.Api
 {
@@ -23,13 +23,19 @@ namespace Bingo.Api
             services.AddMvc();
 
             services.AddTransient<IExercisesService, ExercisesService>();
+            services.AddTransient<IMusclesService, MusclesService>();
+
             services.AddTransient<IExercisesRepository, ExercisesRepository>();
+            services.AddTransient<IMusclesRepository, MusclesRepository>();
 
             IMongoClient client = new MongoClient(@"mongodb://localhost:27017?connectionTimeout=30000");
             var database = client.GetDatabase("bingo");
-            IMongoCollection<Exercise> collection = database.GetCollection<Exercise>("exercises");
-           
-            services.AddSingleton(collection);
+
+            IMongoCollection<Exercise> exercisesCollection = database.GetCollection<Exercise>("exercises");
+            services.AddSingleton(exercisesCollection);
+
+            IMongoCollection<Muscle> musclesCollection = database.GetCollection<Muscle>("muscles");
+            services.AddSingleton(musclesCollection);
 
             services.AddMvc().AddJsonOptions(opt => opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 
@@ -39,8 +45,6 @@ namespace Bingo.Api
                 settings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
                 return settings;
             });
-
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

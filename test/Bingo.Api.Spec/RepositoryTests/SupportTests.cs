@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Bingo.Repository;
 using Shouldly;
-using Bingo.Repository;
 using Xunit;
 
 namespace Bingo.Specification.RepositoryTests
@@ -12,7 +9,7 @@ namespace Bingo.Specification.RepositoryTests
     {
         #region bool DeepEquals(this object actual, object expected)
 
-        private ParentObject _expected = new ParentObject
+        private readonly ParentObject _expected = new ParentObject
         {
             BsonId = "12341223",
             Name = "Name1",
@@ -23,7 +20,7 @@ namespace Bingo.Specification.RepositoryTests
             }
         };
 
-        private ParentObject _actual = new ParentObject
+        private readonly ParentObject _actual = new ParentObject
         {
             BsonId = "12341223",
             Name = "Name1",

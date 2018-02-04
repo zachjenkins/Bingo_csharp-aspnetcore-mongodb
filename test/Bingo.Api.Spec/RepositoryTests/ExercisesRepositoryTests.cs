@@ -107,7 +107,7 @@ namespace Bingo.Specification.RepositoryTests
         #region Task<Exercise> CreateOneAsync(Exercise exercise)
 
         [Fact]
-        public async void CreateOneAsync_ReturnsCreatedObjectWithId_WhenObjectIsInserted()
+        public async void CreateOneAsync_ReturnsCreatedExerciseWithId_WhenObjectIsInserted()
         {
             // Arrange
             var exerciseToCreate = TestData.Exercises.ExerciseWithoutId;
@@ -125,7 +125,7 @@ namespace Bingo.Specification.RepositoryTests
         #region Task<Exercise> DeleteOneAsync(string id)
 
         [Fact]
-        public async void DeleteOneAsync_ByValidExerciseId_ReturnsDeletedObject()
+        public async void DeleteOneAsync_ByValidExerciseId_ReturnsDeletedExercise()
         {
             // Arrange
             var exercises = TestData.Exercises.ContractExercises;

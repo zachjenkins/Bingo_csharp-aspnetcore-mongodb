@@ -36,7 +36,7 @@ namespace Bingo.Specification.TestData
         {
             Name = "Tricep Extensions",
             LongName = "ZBar Tricep Pushdowns",
-            ShortName = "Tricep Extensions"
+            ShortName = "Pushdowns"
         };
 
         public static Exercise ContractExercisePostDtoResponseMock => new Exercise
@@ -44,7 +44,7 @@ namespace Bingo.Specification.TestData
             Id = "123456789012345678904578",
             Name = "Tricep Extensions",
             LongName = "ZBar Tricep Pushdowns",
-            ShortName = "Tricep Extensions"
+            ShortName = "Pushdowns"
         };
 
         public static Exercise ExerciseWithoutId => new Exercise
