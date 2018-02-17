@@ -3,7 +3,9 @@ using Bingo.Repository.Entities;
 using Bingo.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System;
 using System.Collections.Generic;
+using Bingo.Services.Services;
 using Xunit;
 
 namespace Bingo.Specification.ControllerTests
@@ -20,19 +22,19 @@ namespace Bingo.Specification.ControllerTests
             ExercisesController = new ExercisesController(ExercisesServiceMock.Object);
         }
 
-        #region Task<IActionResult> GetManyAsync()
+        #region Get Exercises
 
         [Fact]
-        public async void GetManyAsync_ReturnsOkObjectResult_WhenServiceReturnsExercises()
+        public async void GetExercises_ReturnsOkObjectResult_WhenServiceReturnsExercises()
         {
             // Arrange
             var expectedExercises = TestData.Exercises.ContractExercises;
             ExercisesServiceMock
-                .Setup(x => x.ReadAllAsync())
+                .Setup(x => x.FindExercises())
                 .ReturnsAsync(expectedExercises);
 
             // Act
-            var result = await ExercisesController.GetManyAsync();
+            var result = await ExercisesController.GetExercises();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -40,16 +42,16 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void GetManyAsync_ReturnsOkObjectResult_WhenServiceReturnsEmptyList()
+        public async void GetExercises_ReturnsOkObjectResult_WhenServiceReturnsEmptyList()
         {
             // Arrange
             var expectedExercises = new List<Exercise>();
             ExercisesServiceMock
-                .Setup(x => x.ReadAllAsync())
+                .Setup(x => x.FindExercises())
                 .ReturnsAsync(expectedExercises);
 
             // Act
-            var result = await ExercisesController.GetManyAsync();
+            var result = await ExercisesController.GetExercises();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -58,19 +60,19 @@ namespace Bingo.Specification.ControllerTests
 
         #endregion
 
-        #region Task<IActionResult> GetOneByIdAsync(string id)
+        #region Get Exercise
 
         [Fact]
-        public async void GetOneByIdAsync_ReturnsOkObjectResult_WhenServiceReturnsExercise()
+        public async void GetExercise_ReturnsOkObjectResult_WhenServiceReturnsExercise()
         {
             // Arrange
             var expectedExercise = TestData.Exercises.ContractExercise;
             ExercisesServiceMock
-                .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
+                .Setup(x => x.FindExercise(It.IsAny<string>()))
                 .ReturnsAsync(expectedExercise);
 
             // Act
-            var result = await ExercisesController.GetOneByIdAsync("123021");
+            var result = await ExercisesController.GetExercise("123021");
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -78,15 +80,15 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void GetOneByIdAsync_ReturnsNotFoundResult_WhenServiceReturnsNull()
+        public async void GetExercise_ReturnsNotFoundResult_WhenServiceReturnsNull()
         {
             // Arrange
             ExercisesServiceMock
-                .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
+                .Setup(x => x.FindExercise(It.IsAny<string>()))
                 .ReturnsAsync((Exercise)null);
 
             // Act
-            var result = await ExercisesController.GetOneByIdAsync("123021");
+            var result = await ExercisesController.GetExercise("123021");
 
             // Assert
             Assert.IsType<NotFoundResult>(result);
@@ -94,20 +96,20 @@ namespace Bingo.Specification.ControllerTests
 
         #endregion
 
-        #region Task<IActionResult> PostOneAsync([FromBody] PostExerciseDto exerciseDto)
+        #region Post Exercise
 
         [Fact]
-        public async void PostOneAsync_ReturnsCreatedAtActionResult_WhenServiceReturnsExercise()
+        public async void PostExercise_ReturnsCreatedAtActionResult_WhenServiceReturnsExercise()
         {
             // Arrange
             var exercisePostDto = TestData.Exercises.ContractExercisePostDto;
             var expectedExercise = TestData.Exercises.ContractExercisePostDtoResponseMock;
             ExercisesServiceMock
-                .Setup(x => x.CreateOneAsync(It.IsAny<Exercise>()))
+                .Setup(x => x.CreateExercise(It.IsAny<Exercise>()))
                 .ReturnsAsync(expectedExercise);
 
             // Act
-            var result = await ExercisesController.PostOneAsync(exercisePostDto);
+            var result = await ExercisesController.PostExercise(exercisePostDto);
 
             // Assert
             var createdResult = Assert.IsType<ObjectResult>(result);
@@ -115,30 +117,30 @@ namespace Bingo.Specification.ControllerTests
         }
 
         [Fact]
-        public async void PostOneAsync_ReturnsBadRequestObjectResult_WhenServiceReturnsNull()
+        public async void PostExercise_ReturnsBadRequestObjectResult_WhenServiceReturnsNull()
         {
             // Arrange
             var exercisePostDto = TestData.Exercises.ContractExercisePostDto;
             ExercisesServiceMock
-                .Setup(x => x.CreateOneAsync(It.IsAny<Exercise>()))
+                .Setup(x => x.CreateExercise(It.IsAny<Exercise>()))
                 .ReturnsAsync((Exercise)null);
 
             // Act
-            var result = await ExercisesController.PostOneAsync(exercisePostDto);
+            var result = await ExercisesController.PostExercise(exercisePostDto);
 
             // Assert
             Assert.IsType<BadRequestResult>(result);
         }
 
         [Fact]
-        public async void PostOneAsync_ReturnsBadRequestObjectResult_WhenModelStateIsInvalid()
+        public async void PostExercise_ReturnsBadRequestObjectResult_WhenModelStateIsInvalid()
         {
             // Arrange
             var exercisePostDto = TestData.Exercises.ContractExercisePostDto;
             ExercisesController.ModelState.AddModelError("Mock", "Error");
 
             // Act
-            var result = await ExercisesController.PostOneAsync(exercisePostDto);
+            var result = await ExercisesController.PostExercise(exercisePostDto);
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);
@@ -146,39 +148,128 @@ namespace Bingo.Specification.ControllerTests
 
         #endregion
 
-        #region Task<IActionResult> DeleteOneByIdAsync(string id)
+        #region Delete Exercise
 
         [Fact]
-        public async void DeleteOneByIdAsync_ReturnsNoContentResult_WhenServiceReturnsDeletedExercise()
+        public async void DeleteExercise_ReturnsNoContentResult_WhenServiceReturnsDeletedExercise()
         {
             // Arrange
             var deletedExercise = TestData.Exercises.ContractExercise;
             ExercisesServiceMock
-                .Setup(x => x.DeleteOneAsync(It.IsAny<string>()))
+                .Setup(x => x.DeleteExercise(It.IsAny<string>()))
                 .ReturnsAsync(deletedExercise);
 
             // Act
-            var result = await ExercisesController.DeleteOneByIdAsync("123021");
+            var result = await ExercisesController.DeleteExercise("123021");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
         }
 
         [Fact]
-        public async void DeleteOneByIdAsync_ReturnsNoContentResult_WhenServiceReturnsNull()
+        public async void DeleteExercise_ReturnsNoContentResult_WhenServiceReturnsNull()
         {
             // Arrange
             ExercisesServiceMock
-                .Setup(x => x.DeleteOneAsync(It.IsAny<string>()))
+                .Setup(x => x.DeleteExercise(It.IsAny<string>()))
                 .ReturnsAsync((Exercise)null);
 
             // Act
-            var result = await ExercisesController.DeleteOneByIdAsync("123021");
+            var result = await ExercisesController.DeleteExercise("123021");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
         }
 
+        #endregion
+        
+        #region Get Activation for an Exercise
+    
+        [Fact]
+        public async void GetActivationForExercise_ReturnsOkObjectResult_WhenServiceReturnsActivation()
+        {
+            // Arrange
+            var expectedActivation = TestData.Activations.ContractActivation; 
+            ExercisesServiceMock
+                .Setup(x => x.FindActivation(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(expectedActivation);
+
+            // Act
+            var result = await ExercisesController.GetActivationForExercise("ExerciseId", "ActivationId");
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Same(expectedActivation, okResult.Value);
+        }
+
+        [Fact]
+        public async void GetActivationForExercise_ReturnNotFoundResult_WhenServiceReturnsNull()
+        {
+            // Arrange
+            ExercisesServiceMock
+                .Setup(x => x.FindActivation(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync((Activation)null);
+
+            // Act
+            var result = await ExercisesController.GetActivationForExercise("ExerciseId", "ActivationId");
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+    
+        #endregion
+        
+        #region Get Activations for an Exercise
+    
+        [Fact]
+        public async void GetActivationsForExercise_ReturnsOkObjectResult_WhenServiceReturnsActivations()
+        {
+            // Arrange
+            var expectedActivations = TestData.Activations.ContractActivations; 
+            ExercisesServiceMock
+                .Setup(x => x.FindActivations(It.IsAny<string>()))
+                .ReturnsAsync(expectedActivations);
+
+            // Act
+            var result = await ExercisesController.GetActivationsForExercise("ExerciseId");
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Same(expectedActivations, okResult.Value);
+        }
+
+        [Fact]
+        public async void GetActivationsForExercise_ReturnsEmptyOkObjectResult_WhenServiceReturnsEmptyResult()
+        {
+            // Arrange
+            var expectedActivations = new List<Activation>();
+            ExercisesServiceMock
+                .Setup(x => x.FindActivations(It.IsAny<string>()))
+                .ReturnsAsync(expectedActivations);
+
+            // Act
+            var result = await ExercisesController.GetActivationsForExercise("ExerciseId");
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Same(expectedActivations, okResult.Value);
+        }
+
+        [Fact]
+        public async void GetActivationsForExercise_ReturnNotFoundResult_WhenServiceReturnsNull()
+        {
+            // Arrange
+            ExercisesServiceMock
+                .Setup(x => x.FindActivations(It.IsAny<string>()))
+                .ReturnsAsync((IEnumerable<Activation>)null);
+
+            // Act
+            var result = await ExercisesController.GetActivationsForExercise("ExerciseId");
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+    
         #endregion
     }
 }

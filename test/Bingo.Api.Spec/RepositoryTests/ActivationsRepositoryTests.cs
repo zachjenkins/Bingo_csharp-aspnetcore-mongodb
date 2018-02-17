@@ -74,6 +74,39 @@ namespace Bingo.Specification.RepositoryTests
         }
 
         #endregion
+        
+        #region Read Many Activations
+
+        [Fact]
+        public async void ReadManyAsync_WhenMatchingDataExists_ReturnsListOfExpectedActivations()
+        {
+            // Arrange
+            var expectedActivation = TestData.Activations.ContractActivation;
+            var allActivations = TestData.Activations.ContractActivations;
+            Collection.InsertMany(allActivations);
+
+            // Act
+            var result = await ActivationsRepository.ReadManyAsync(expectedActivation.ExerciseId);
+
+            // Assert
+            result.ShouldContain(expectedActivation);
+        }
+
+        [Fact]
+        public async void ReadManyAsync_WhenNoMatchingDataExists_ReturnsEmptyActivationList()
+        {
+            // Arrange
+            var allActivations = TestData.Activations.ContractActivations;
+            Collection.InsertMany(allActivations);
+
+            // Act
+            var result = await ActivationsRepository.ReadManyAsync("NonExistentExerciseId");
+
+            // Assert
+            result.ShouldBeEmpty();
+        }
+        
+        #endregion
 
         #region Task<IEnumerable<Activation>> ReadAllAsync()
 
@@ -92,7 +125,7 @@ namespace Bingo.Specification.RepositoryTests
         }
 
         [Fact]
-        public async void ReadAllAsync_WhenCollectionIsEmpty_ReturnsListOfExpectedActivations()
+        public async void ReadAllAsync_WhenCollectionIsEmpty_ReturnsEmptyActivationList()
         {
             // Act
             var result = await ActivationsRepository.ReadAllAsync();
