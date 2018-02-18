@@ -250,6 +250,70 @@ namespace Bingo.Specification.ServicesTests
 
         #endregion
 
+        #region Create Activation
+
+        [Fact]
+        public async void CreateActivation_ReturnsActivation_WhenRepositoryReturnsCreatedActivation()
+        {
+            // Arrange
+            var activationToCreate = TestData.Activations.ActivationWithoutId;
+            var createdActivation = TestData.Activations.ContractActivationPostDtoResponseMock;
+            ExercisesRepositoryMock
+                .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
+                .ReturnsAsync(new Exercise());
+            ActivationsRepositoryMock
+                .Setup(x => x.CreateOneAsync(It.IsAny<Activation>()))
+                .ReturnsAsync(createdActivation);
+
+            // Act
+            var result = await ExercisesService.CreateActivation("ExerciseId", activationToCreate);
+
+            // Assert
+            Assert.Same(createdActivation, result);
+        }
+
+        [Fact]
+        public async void CreateActivation_ReturnsNullActivation_WhenRepositoryReturnsNullExercise()
+        {
+            // Arrange
+            var activationToCreate = TestData.Activations.ActivationWithoutId;
+            var createdActivation = TestData.Activations.ContractActivationPostDtoResponseMock;
+            ExercisesRepositoryMock
+                .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
+                .ReturnsAsync((Exercise)null);
+            ActivationsRepositoryMock
+                .Setup(x => x.CreateOneAsync(It.IsAny<Activation>()))
+                .ReturnsAsync(createdActivation);
+
+            // Act
+            var result = await ExercisesService.CreateActivation("ExerciseId", activationToCreate);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async void CreateActivation_ReturnsNullActivation_WhenRepositoryReturnsNullActivation()
+        {
+            // Arrange
+            var activationToCreate = TestData.Activations.ActivationWithoutId;
+            var createdActivation = TestData.Activations.ContractActivationPostDtoResponseMock;
+            ExercisesRepositoryMock
+                .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
+                .ReturnsAsync(new Exercise());
+            ActivationsRepositoryMock
+                .Setup(x => x.CreateOneAsync(It.IsAny<Activation>()))
+                .ReturnsAsync((Activation)null);
+
+            // Act
+            var result = await ExercisesService.CreateActivation("ExerciseId", activationToCreate);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        #endregion
+
         #region Delete Exercise
 
         [Fact]

@@ -1,4 +1,5 @@
 ﻿using Bingo.Api.Models;
+using Bingo.Api.Models.Activations;
 using Bingo.Services.Contracts;
 using Bingo.Repository.Entities;
 using Microsoft.AspNetCore.Http;
@@ -90,6 +91,24 @@ namespace Bingo.Api.Controllers
                 return BadRequest();
 
             return StatusCode(201, postedExercise);
+        }
+
+        [HttpPost("{exerciseId}/activations", Name = "Post Activation to Exercise")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Activation))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> PostActivationToExercise(string exerciseId, [FromBody] PostActivationDto activationDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.Values);
+
+            var postedActivation = await _exercisesService.CreateActivation(exerciseId, activationDto.ToActivation());
+
+            if (postedActivation == null)
+                return NotFound();
+
+            return StatusCode(201, postedActivation);
         }
         
         #endregion

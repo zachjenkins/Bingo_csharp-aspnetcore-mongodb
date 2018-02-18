@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
-using Bingo.Services.Services;
 using Xunit;
 
 namespace Bingo.Specification.ControllerTests
@@ -269,7 +268,60 @@ namespace Bingo.Specification.ControllerTests
             // Assert
             Assert.IsType<NotFoundResult>(result);
         }
-    
+
+        #endregion
+
+        #region Post an Activation to an Exercise
+
+        [Fact]
+        public async void PostActivationToExercise_ReturnsCreatedAtResult_WhenServiceReturnsCreatedActivation()
+        {
+            // Arrange
+            var activationPostDto = TestData.Activations.ContractActivationPostDto;
+            var expectedActivation = TestData.Activations.ContractActivationPostDtoResponseMock;
+            ExercisesServiceMock
+                .Setup(x => x.CreateActivation(It.IsAny<string>(), It.IsAny<Activation>()))
+                .ReturnsAsync(expectedActivation);
+
+            // Act
+            var result = await ExercisesController.PostActivationToExercise("exerciseId", activationPostDto);
+
+            // Assert
+            var createdResult = Assert.IsType<ObjectResult>(result);
+            Assert.True(createdResult.StatusCode == 201);
+
+        }
+
+        [Fact]
+        public async void PostActivationToExercise_ReturnsNotFoundObject_WhenServiceReturnsNull()
+        {
+            // Arrange
+            var activationPostDto = TestData.Activations.ContractActivationPostDto;
+            ExercisesServiceMock
+                .Setup(x => x.CreateActivation(It.IsAny<string>(), It.IsAny<Activation>()))
+                .ReturnsAsync((Activation)null);
+
+            // Act
+            var result = await ExercisesController.PostActivationToExercise("exerciseId", activationPostDto);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async void PostActivationToExercise_ReturnsBadRequestObject_WhenModelStateIsInvalid()
+        {
+            // Arrange
+            var activationPostDto = TestData.Activations.ContractActivationPostDto;
+            ExercisesController.ModelState.AddModelError("Mock", "Error");
+
+            // Act
+            var result = await ExercisesController.PostActivationToExercise("exerciseId", activationPostDto);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
         #endregion
     }
 }

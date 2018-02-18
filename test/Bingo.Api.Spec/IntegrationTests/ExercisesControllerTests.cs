@@ -92,6 +92,22 @@ namespace Bingo.Specification.IntegrationTests
         }
 
         [Fact]
+        public async void PostActivationToExercise_WithValidRqo_ReturnsPostedExercise201()
+        {
+            var expectedExercise = Exercises.ContractExercise;
+            var postDto = Activations.ContractActivationPostDto;
+
+            var response = await _service.Api.PostActivationToExercise(expectedExercise.Id, postDto);
+            var postedActivation = response.GetContent();
+
+            this.ShouldSatisfyAllConditions(
+                    () => response.ResponseMessage.StatusCode.ShouldBe(HttpStatusCode.Created),
+                    () => postedActivation.ShouldBe(postDto.ToActivation()),
+                    () => _service.ActivationsCollection.ShouldContain(postedActivation)
+                );
+        }
+
+        [Fact]
         public async void DeleteExercise_ByExerciseId_ReturnsNoData204()
         {
             var exerciseToDelete = Exercises.RandomizedExercise;
