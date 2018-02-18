@@ -2,11 +2,10 @@ using Bingo.Api.Models;
 using Bingo.Repository.Entities;
 using Bingo.Specification.Helpers;
 using Shouldly;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Xunit;
 
-namespace Bingo.Specification.ModelTests
+namespace Bingo.Specification.ModelTests.Activations
 {
     [Trait("Api", nameof(PostEmpResultDtoTests))]
     public class PostEmpResultDtoTests

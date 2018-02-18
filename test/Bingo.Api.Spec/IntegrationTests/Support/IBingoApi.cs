@@ -1,4 +1,5 @@
 ﻿using Bingo.Api.Models;
+using Bingo.Api.Models.Activations;
 using Bingo.Repository.Entities;
 using RestEase;
 using System.Collections.Generic;

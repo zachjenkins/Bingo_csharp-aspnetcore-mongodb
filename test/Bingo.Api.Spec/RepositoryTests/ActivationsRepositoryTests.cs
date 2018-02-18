@@ -143,14 +143,14 @@ namespace Bingo.Specification.RepositoryTests
         public async void CreateOneAsync_ReturnsCreatedActivationWithId_WhenObjectIsInserted()
         {
             // Arrange
-            var ActivationToCreate = TestData.Activations.ActivationWithoutId;
+            var activationToCreate = TestData.Activations.ActivationWithoutId;
 
             // Act
-            var result = await ActivationsRepository.CreateOneAsync(ActivationToCreate);
+            var result = await ActivationsRepository.CreateOneAsync(activationToCreate);
 
             // Assert
             result.Id.ShouldNotBeNull();
-            result.ShouldBe(ActivationToCreate);
+            result.ShouldBe(activationToCreate);
         }
 
         #endregion
@@ -161,16 +161,16 @@ namespace Bingo.Specification.RepositoryTests
         public async void DeleteOneAsync_ByValidActivationId_ReturnsDeletedActivation()
         {
             // Arrange
-            var Activations = TestData.Activations.ContractActivations;
-            var ActivationToDelete = Activations.First();
-            Collection.InsertMany(Activations);
+            var activations = TestData.Activations.ContractActivations;
+            var activationToDelete = activations.First();
+            Collection.InsertMany(activations);
 
             // Act
-            var result = await ActivationsRepository.DeleteOneAsync(ActivationToDelete.Id);
+            var result = await ActivationsRepository.DeleteOneAsync(activationToDelete.Id);
 
             // Assert
-            result.ShouldBe(ActivationToDelete);
-            Collection.ShouldNotContain(ActivationToDelete);
+            result.ShouldBe(activationToDelete);
+            Collection.ShouldNotContain(activationToDelete);
             Collection.ShouldNotBeEmpty();
         }
 
