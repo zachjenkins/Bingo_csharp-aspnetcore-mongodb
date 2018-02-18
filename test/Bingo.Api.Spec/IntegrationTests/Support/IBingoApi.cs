@@ -30,14 +30,20 @@ namespace Bingo.Specification.IntegrationTests.Support
         [Get("api/exercises")]
         Task<Response<List<Exercise>>> GetExercises();
 
-        [Get("api/exercises/{id}")]
-        Task<Response<Exercise>> GetExerciseById([Path] string id);
+        [Get("api/exercises/{exerciseId}")]
+        Task<Response<Exercise>> GetExerciseById([Path] string exerciseId);
+
+        [Get("api/exercises/{exerciseId}/activations")]
+        Task<Response<List<Activation>>> GetActivationsForExercise([Path] string exerciseId);
+
+        [Get("api/exercises/{exerciseId}/activations/{activationId}")]
+        Task<Response<Activation>> GetActivationForExercise([Path] string exerciseId, [Path] string activationId);
 
         [Post("api/exercises")]
         Task<Response<Exercise>> PostExercise([Body] PostExerciseDto postDto);
 
-        [Delete("api/exercises/{id}")]
-        Task<Response<string>> DeleteExerciseById([Path] string id);
+        [Delete("api/exercises/{exerciseId}")]
+        Task<Response<string>> DeleteExerciseById([Path] string exerciseId);
 
         #endregion
 

@@ -58,7 +58,7 @@ namespace Bingo.Api.Controllers
             return Ok(response);
         }
         
-        [HttpGet("{exerciseId}/activations/{activationId}", Name = "Get Activation by Id")]
+        [HttpGet("{exerciseId}/activations/{activationId}", Name = "Get Activation by Id for Exercise")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Activation))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetActivationForExercise(string exerciseId, string activationId)

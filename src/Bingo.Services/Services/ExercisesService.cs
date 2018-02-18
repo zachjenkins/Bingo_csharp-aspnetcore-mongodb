@@ -43,7 +43,7 @@ namespace Bingo.Services.Services
         
         public async Task<IEnumerable<Activation>> FindActivations(string exerciseId)
         {
-            var exercise = _exercisesRepository.ReadOneAsync(exerciseId);
+            var exercise = await _exercisesRepository.ReadOneAsync(exerciseId);
 
             if (exercise == null)
                 return null;
