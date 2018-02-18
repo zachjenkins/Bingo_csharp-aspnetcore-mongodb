@@ -1,4 +1,5 @@
 ﻿using Bingo.Api.Models;
+using Bingo.Api.Models.Activations;
 using Bingo.Repository.Entities;
 using Bingo.Specification.Helpers;
 using System.Collections.Generic;
@@ -95,7 +96,35 @@ namespace Bingo.Specification.TestData
                 LactateProduction = 34
             }
         };
-        
+    
+        public static Activation ContractActivationPostDtoResponseMock => new Activation
+        {
+            Id = "123456789012345678945671",
+            ExerciseId = "123456789012345678904587",
+            MuscleId = "123456789012345678904963",
+            ForceOutputPercentage = 100.00,
+            RangeOfMotion = 100,
+            RepetitionTempo = new RepetitionTempo
+            {
+                Type = "Tempo",
+                EccentricDuration = 4,
+                ConcentricDuration = 1,
+                IsometricDuration = 2,
+                Duration = 3
+            },
+            Electromyography = new EmgResult
+            {
+                MeanEmg = 12,
+                PeakEmg = 39
+            },
+            LactateProduction = new LactateResult
+            {
+                AerobicRespiration = 211,
+                AnaerobicRespiration = 635,
+                LactateProduction = 34
+            }
+        };
+
         public static Activation ActivationWithoutId => new Activation
         {
             ExerciseId = "123456789012345678904587",

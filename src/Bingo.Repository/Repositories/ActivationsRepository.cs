@@ -20,11 +20,18 @@ namespace Bingo.Repository.Repositories
             if (id.IsNot24BitHex())
                 return null;
 
-            var filter = Builders<Activation>.Filter.Eq(ex => ex.Id, id);
+            var filter = Builders<Activation>.Filter.Eq(act => act.Id, id);
             var result = await _collection.FindAsync(filter);
             return result.FirstOrDefault();
         }
 
+        public async Task<IEnumerable<Activation>> ReadManyAsync(string exerciseId)
+        {
+            var filter = Builders<Activation>.Filter.Eq(act => act.ExerciseId, exerciseId);
+            var result = await _collection.FindAsync(filter);
+            return result.ToList();
+        }
+        
         public async Task<IEnumerable<Activation>> ReadAllAsync()
         {
             var filter = Builders<Activation>.Filter.Empty;
@@ -46,7 +53,7 @@ namespace Bingo.Repository.Repositories
             if (activationToDelete == null)
                 return null;
                 
-            var filter = Builders<Activation>.Filter.Eq(ex => ex.Id, id);
+            var filter = Builders<Activation>.Filter.Eq(act => act.Id, id);
             await _collection.DeleteOneAsync(filter);
 
             return activationToDelete;

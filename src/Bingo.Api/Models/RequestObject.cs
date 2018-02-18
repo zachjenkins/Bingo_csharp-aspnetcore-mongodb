@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Bingo.Api.Models
+﻿namespace Bingo.Api.Models
 {
     public abstract class RequestObject
     {

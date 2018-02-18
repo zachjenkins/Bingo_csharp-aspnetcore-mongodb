@@ -1,4 +1,4 @@
-﻿using Bingo.Api.Models;
+﻿using Bingo.Api.Models.Activations;
 using Bingo.Services.Contracts;
 using Bingo.Repository.Entities;
 using Microsoft.AspNetCore.Http;

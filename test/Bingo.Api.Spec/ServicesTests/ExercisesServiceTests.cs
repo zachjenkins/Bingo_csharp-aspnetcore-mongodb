@@ -11,18 +11,20 @@ namespace Bingo.Specification.ServicesTests
     public class ExercisesServiceTests
     {
         protected ExercisesService ExercisesService { get; }
+        protected Mock<IActivationsRepository> ActivationsRepositoryMock { get; }
         protected Mock<IExercisesRepository> ExercisesRepositoryMock { get; }
 
         public ExercisesServiceTests()
         {
+            ActivationsRepositoryMock = new Mock<IActivationsRepository>();
             ExercisesRepositoryMock = new Mock<IExercisesRepository>();
-            ExercisesService = new ExercisesService(ExercisesRepositoryMock.Object);
+            ExercisesService = new ExercisesService(ActivationsRepositoryMock.Object, ExercisesRepositoryMock.Object);
         }
 
-        #region Task<IEnumerable<Exercise>> ReadAllAsync()
+        #region Find Exercises
 
         [Fact]
-        public async void ReadAllAsync_ReturnsExercises_WhenRepositoryReturnsExercises()
+        public async void FindExercises_ReturnsExercises_WhenRepositoryReturnsExercises()
         {
             // Arrange
             var expectedExercises = TestData.Exercises.ContractExercises;
@@ -31,14 +33,14 @@ namespace Bingo.Specification.ServicesTests
                 .ReturnsAsync(expectedExercises);
 
             // Act
-            var result = await ExercisesService.ReadAllAsync();
+            var result = await ExercisesService.FindExercises();
 
             // Assert
             Assert.Same(expectedExercises, result);
         }
 
         [Fact]
-        public async void ReadAllAsync_ReturnsEmptyArray_WhenRepositoryReturnsEmptyArray()
+        public async void FindExercises_ReturnsEmptyArray_WhenRepositoryReturnsEmptyArray()
         {
             // Arrange
             var expectedExercises = new List<Exercise>();
@@ -47,7 +49,7 @@ namespace Bingo.Specification.ServicesTests
                 .ReturnsAsync(expectedExercises);
 
             // Act
-            var result = await ExercisesService.ReadAllAsync();
+            var result = await ExercisesService.FindExercises();
 
             // Assert
             Assert.Same(expectedExercises, result);
@@ -55,10 +57,10 @@ namespace Bingo.Specification.ServicesTests
 
         #endregion
 
-        #region Task<Exercise> ReadOneAsync(string id)
+        #region Find Exercise by Id
         
         [Fact]
-        public async void ReadOneAsync_ReturnsExercise_WhenRepositoryReturnsExercise()
+        public async void FindExercise_ReturnsExercise_WhenRepositoryReturnsExercise()
         {
             // Arrange
             var expectedExercise = TestData.Exercises.ContractExercise;
@@ -67,14 +69,14 @@ namespace Bingo.Specification.ServicesTests
                 .ReturnsAsync(expectedExercise);
 
             // Act
-            var result = await ExercisesService.ReadOneAsync("123021");
+            var result = await ExercisesService.FindExercise("123021");
 
             // Assert
             Assert.Same(expectedExercise, result);
         }
 
         [Fact]
-        public async void ReadOneAsync_ReturnsNull_WhenRepositoryReturnsNull()
+        public async void FindExercise_ReturnsNull_WhenRepositoryReturnsNull()
         {
             // Arrange
             ExercisesRepositoryMock
@@ -82,18 +84,139 @@ namespace Bingo.Specification.ServicesTests
                 .ReturnsAsync((Exercise)null);
 
             // Act
-            var result = await ExercisesService.ReadOneAsync("123021");
+            var result = await ExercisesService.FindExercise("123021");
 
             // Assert
             Assert.Null(result);
         }
 
         #endregion
-
-        #region Task<Exercise> CreateOneAsync(Exercise exerciseToCreate)
+        
+        #region Find Single Activation
 
         [Fact]
-        public async void CreateOneAsync_ReturnsCreatedExercise_WhenServiceReturnsExercise()
+        public async void FindActivation_ReturnsActivation_WhenRepositoryReturnsActivation()
+        {
+            // Arrange
+            var expectedExercise = TestData.Exercises.ContractExercise;
+            var expectedActivation = TestData.Activations.ContractActivation;
+            ExercisesRepositoryMock
+                .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
+                .ReturnsAsync(expectedExercise);
+            ActivationsRepositoryMock
+                .Setup((x => x.ReadOneAsync(It.IsAny<string>())))
+                .ReturnsAsync(expectedActivation);
+            
+            // Act
+            var result = await ExercisesService.FindActivation("ExerciseId", "ActivationId");
+            
+            // Assert
+            Assert.Same(expectedActivation, result);
+        }
+
+        [Fact]
+        public async void FindActivation_ReturnsNull_WhenRepositoryReturnsNullExercise()
+        {
+            // Arrange
+            ExercisesRepositoryMock
+                .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
+                .ReturnsAsync((Exercise)null);
+        
+            
+            // Act
+            var result = await ExercisesService.FindActivation("ExerciseId", "ActivationId");
+            
+            // Assert
+            ActivationsRepositoryMock.Verify(x => x.ReadOneAsync(It.IsAny<string>()), Times.Never);
+            Assert.Null(result);
+        }
+        
+        [Fact]
+        public async void FindActivation_ReturnsNull_WhenRepositoryReturnsNullActivation()
+        {
+            // Arrange
+            ExercisesRepositoryMock
+                .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
+                .ReturnsAsync(new Exercise());
+            ActivationsRepositoryMock
+                .Setup((x => x.ReadOneAsync(It.IsAny<string>())))
+                .ReturnsAsync((Activation)null);
+        
+            
+            // Act
+            var result = await ExercisesService.FindActivation("ExerciseId", "ActivationId");
+            
+            // Assert
+            ActivationsRepositoryMock.Verify(x => x.ReadOneAsync(It.IsAny<string>()), Times.Once());
+            Assert.Null(result);
+        }
+        
+        #endregion
+        
+        #region Find Many Activations
+
+        [Fact]
+        public async void FindActivations_ReturnsActivation_WhenRepositoryReturnsActivation()
+        {
+            // Arrange
+            var expectedExercise = TestData.Exercises.ContractExercise;
+            var expectedActivations = TestData.Activations.ContractActivations;
+            ExercisesRepositoryMock
+                .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
+                .ReturnsAsync(expectedExercise);
+            ActivationsRepositoryMock
+                .Setup((x => x.ReadManyAsync(It.IsAny<string>())))
+                .ReturnsAsync(expectedActivations);
+            
+            // Act
+            var result = await ExercisesService.FindActivations("ExerciseId");
+            
+            // Assert
+            Assert.Same(expectedActivations, result);
+        }
+
+        [Fact]
+        public async void FindActivations_ReturnsNull_WhenRepositoryReturnsNullExercise()
+        {
+            // Arrange
+            ExercisesRepositoryMock
+                .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
+                .ReturnsAsync((Exercise)null);
+        
+            // Act
+            var result = await ExercisesService.FindActivations("ExerciseId");
+            
+            // Assert
+            //ActivationsRepositoryMock.Verify(x => x.ReadManyAsync(It.IsAny<string>()), Times.Never);
+            Assert.Null(result);
+        }
+        
+        [Fact]
+        public async void FindActivations_ReturnsEmptyEnumerable_WhenRepositoryReturnsEmptyActivationsEnumerable()
+        {
+            // Arrange
+            var expectedActivations = new List<Activation>();
+            ExercisesRepositoryMock
+                .Setup(x => x.ReadOneAsync(It.IsAny<string>()))
+                .ReturnsAsync(new Exercise());
+            ActivationsRepositoryMock
+                .Setup((x => x.ReadManyAsync(It.IsAny<string>())))
+                .ReturnsAsync(expectedActivations);
+        
+            
+            // Act
+            var result = await ExercisesService.FindActivations("ExerciseId");
+            
+            // Assert
+            Assert.Same(expectedActivations, result);
+        }
+        
+        #endregion
+
+        #region Create Exercise
+
+        [Fact]
+        public async void CreateExercise_ReturnsCreatedExercise_WhenServiceReturnsExercise()
         {
             // Arrange
             var exerciseToCreate = TestData.Exercises.ExerciseWithoutId;
@@ -103,14 +226,14 @@ namespace Bingo.Specification.ServicesTests
                 .ReturnsAsync(createdExercise);
 
             // Act
-            var result = await ExercisesService.CreateOneAsync(exerciseToCreate);
+            var result = await ExercisesService.CreateExercise(exerciseToCreate);
 
             // Assert
             Assert.Same(createdExercise, result);
         }
 
         [Fact]
-        public async void CreateOneAsync_ReturnsNull_WhenRepositoryReturnsNull()
+        public async void CreateExercise_ReturnsNull_WhenRepositoryReturnsNull()
         {
             // Arrange
             var exerciseToCreate = TestData.Exercises.ExerciseWithoutId;
@@ -119,7 +242,7 @@ namespace Bingo.Specification.ServicesTests
                 .ReturnsAsync((Exercise)null);
 
             // Act
-            var result = await ExercisesService.CreateOneAsync(exerciseToCreate);
+            var result = await ExercisesService.CreateExercise(exerciseToCreate);
 
             // Assert
             Assert.Null(result);
@@ -127,10 +250,10 @@ namespace Bingo.Specification.ServicesTests
 
         #endregion
 
-        #region Task<Exercise> DeleteOneAsync(string id)
+        #region Delete Exercise
 
         [Fact]
-        public async void DeleteOneAsync_ReturnsExercise_WhenRepositoryReturnsExercise()
+        public async void DeleteExercise_ReturnsExercise_WhenRepositoryReturnsExercise()
         {
             // Arrange
             var deletedExercise = TestData.Exercises.ContractExercise;
@@ -139,14 +262,14 @@ namespace Bingo.Specification.ServicesTests
                 .ReturnsAsync(deletedExercise);
 
             // Act
-            var result = await ExercisesService.DeleteOneAsync("123021");
+            var result = await ExercisesService.DeleteExercise("123021");
 
             // Assert
             Assert.Same(deletedExercise, result);
         }
 
         [Fact]
-        public async void DeleteOneAsync_ReturnsNull_WhenRepositoryReturnsNull()
+        public async void DeleteExercise_ReturnsNull_WhenRepositoryReturnsNull()
         {
             // Arrange
             ExercisesRepositoryMock
@@ -154,7 +277,7 @@ namespace Bingo.Specification.ServicesTests
                 .ReturnsAsync((Exercise)null);
 
             // Act
-            var result = await ExercisesService.DeleteOneAsync("123021");
+            var result = await ExercisesService.DeleteExercise("123021");
 
             // Assert
             Assert.Null(result);

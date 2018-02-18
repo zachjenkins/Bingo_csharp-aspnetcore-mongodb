@@ -42,8 +42,36 @@ namespace Bingo.Specification.IntegrationTests
 
             this.ShouldSatisfyAllConditions(
                     () => response.ResponseMessage.StatusCode.ShouldBe(HttpStatusCode.OK),
-                    () => actualExercise.ShouldBe(expectedExercise),
-                    () => _service.ExercisesCollection.ShouldContain(actualExercise)
+                    () => actualExercise.ShouldBe(expectedExercise)
+                );
+        }
+
+        [Fact]
+        public async void GetActivationsForExercise_ByExerciseId_ReturnsExpectedActivations200()
+        {
+            var expectedExercise = Exercises.ContractExercise;
+
+            var response = await _service.Api.GetActivationsForExercise(expectedExercise.Id);
+            var actualExercises = response.GetContent();
+
+            this.ShouldSatisfyAllConditions(
+                    () => response.ResponseMessage.StatusCode.ShouldBe(HttpStatusCode.OK),
+                    () => actualExercises.TrueForAll(x => x.ExerciseId == expectedExercise.Id)
+                );
+        }
+
+        [Fact]
+        public async void GetActivationForExercise_ByExerciseId_ReturnsExpectedActivation200()
+        {
+            var expectedExercise = Exercises.ContractExercise;
+            var expectedActivation = Activations.ContractActivation;
+
+            var response = await _service.Api.GetActivationForExercise(expectedExercise.Id, expectedActivation.Id);
+            var actualActivation = response.GetContent();
+
+            this.ShouldSatisfyAllConditions(
+                    () => response.ResponseMessage.StatusCode.ShouldBe(HttpStatusCode.OK),
+                    () => actualActivation.ShouldBe(expectedActivation)
                 );
         }
 

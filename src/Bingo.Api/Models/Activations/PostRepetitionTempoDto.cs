@@ -1,8 +1,6 @@
 ﻿using Bingo.Repository.Entities;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bingo.Api.Models
 {
