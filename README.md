@@ -44,4 +44,4 @@ The following things can be done in any order!
 
     From the root of the project >> `dotnet test`
 
-	Framework dependencies such as mongoDb and ASP.NET core are initialized in-memory, for the lifetime of the test execution. No setup required.
+	Framework dependencies such as mongoDb and ASP.NET core are initialized in-memory or managed entirely by the test harness, for the lifetime of the test execution. No setup required.

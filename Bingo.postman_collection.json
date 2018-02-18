@@ -1,108 +1,388 @@
 {
 	"info": {
 		"name": "Bingo",
-		"_postman_id": "d4943039-196d-b235-8d02-f7b9dffe9980",
+		"_postman_id": "fe6f0bf6-d4e0-0f80-d19b-d066d41b4738",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Get Exercise By Id",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "http://localhost:61088/api/exercises/5a37c78f977cd7e92241b9b9",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "61088",
-					"path": [
-						"api",
-						"exercises",
-						"5a37c78f977cd7e92241b9b9"
-					]
+			"name": "ExercisesController",
+			"description": "",
+			"item": [
+				{
+					"name": "/exercises",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/api/exercises",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"exercises"
+							]
+						}
+					},
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
+				{
+					"name": "/exercises/{exerciseId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/api/exercises/5a37c78f977cd7e92241b9b9",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"exercises",
+								"5a37c78f977cd7e92241b9b9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/exercises/{exerciseId}/activations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/api/exercises/5a37c78f977cd7e92241b9b9/activations",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"exercises",
+								"5a37c78f977cd7e92241b9b9",
+								"activations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/exercises/{exerciseId}/activations/{activationId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/api/exercises/5a37c78f977cd7e92241b9b9/activations/5a89afff78523e2618d4bc89",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"exercises",
+								"5a37c78f977cd7e92241b9b9",
+								"activations",
+								"5a89afff78523e2618d4bc89"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/exercises",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"Overhead Press\",\r\n    \"shortName\": \"Press\",\r\n    \"longName\": \"Barbell Overhead Press\"\r\n}"
+						},
+						"url": {
+							"raw": "{{HOST}}/api/exercises",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"exercises"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/exercises/{exerciseId}/activations",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"exerciseId\":\"5a37c78f977cd7e92241b9b9\",\n\t\"muscleId\":\"5a89b72478523e2618d4bc8a\",\n\t\"rangeOfMotion\":100,\n\t\"forceOutputPercentage\":100,\n\t\"repetitionTempo\":{\n\t\t\"duration\": 3.0,\n\t\t\"concentricDuration\": 1.0,\n\t\t\"eccentricDuration\": 1.5,\n\t\t\"isometricDuration\": .5,\n\t\t\"type\": \"regular\"\n\t},\n\t\"electromyography\":{\n\t\t\"meanEmg\": 101,\n\t\t\"peakEmg\": 178\n\t},\n\t\"lactateProduction\":{\n\t\t\"lactateProduction\": \"18\",\n\t\t\"aerobicRespiration\": \"15\",\n\t\t\"anaerobicRespiration\":\"67\"\n\t}\n}\n\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/api/exercises/5a37c78f977cd7e92241b9b9/activations",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"exercises",
+								"5a37c78f977cd7e92241b9b9",
+								"activations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/exercises/{exerciseId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/api/exercises/4",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"exercises",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/exercises/{exerciseId}/activations/{activationId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/api/exercises/4/activations/2341234214",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"exercises",
+								"4",
+								"activations",
+								"2341234214"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
-			"name": "Get All Exercises",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "http://localhost:65315/api/exercises",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "65315",
-					"path": [
-						"api",
-						"exercises"
-					]
+			"name": "ActivationsController",
+			"description": "",
+			"item": [
+				{
+					"name": "/activations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/api/activations",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"activations"
+							]
+						}
+					},
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
+				{
+					"name": "/activations/{activationId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/api/activations/5a89afff78523e2618d4bc89",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"activations",
+								"5a89afff78523e2618d4bc89"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/activations",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"exerciseId\":\"5a37c78f977cd7e92241b9b9\",\n\t\"muscleId\":\"5a89ae1378523e2618d4bc85\",\n\t\"rangeOfMotion\":100,\n\t\"forceOutputPercentage\":100,\n\t\"repetitionTempo\":{\n\t\t\"duration\": 3.0,\n\t\t\"concentricDuration\": 1.0,\n\t\t\"eccentricDuration\": 1.5,\n\t\t\"isometricDuration\": .5,\n\t\t\"type\": \"regular\"\n\t},\n\t\"electromyography\":{\n\t\t\"meanEmg\": 193,\n\t\t\"peakEmg\": 289\n\t},\n\t\"lactateProduction\":{\n\t\t\"lactateProduction\": \"22\",\n\t\t\"aerobicRespiration\": \"13\",\n\t\t\"anaerobicRespiration\":\"75\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{HOST}}/api/activations",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"activations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/activations/{activationId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/api/activations/21431234234",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"activations",
+								"21431234234"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
-			"name": "Post Exercise",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\t\"name\": \"Overhead Press\",\r\n    \"shortName\": \"Press\",\r\n    \"longName\": \"Barbell Overhead Press\"\r\n}"
+			"name": "MusclesController",
+			"description": "",
+			"item": [
+				{
+					"name": "/muscles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/api/muscles",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"muscles"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:61088/api/exercises",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "61088",
-					"path": [
-						"api",
-						"exercises"
-					]
+				{
+					"name": "/muscles/{muscleId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{HOST}}/api/muscles/5a89ae1378523e2618d4bc85",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"muscles",
+								"5a89ae1378523e2618d4bc85"
+							]
+						}
+					},
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Exercise",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "http://localhost:65315/api/exercises/4",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "65315",
-					"path": [
-						"api",
-						"exercises",
-						"4"
-					]
+				{
+					"name": "/muscles",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Quadriceps\",\n\t\"shortName\":\"Quads\",\n\t\"longName\":\"Quadriceps Enormo\",\n\t\"groupId\":\"123456783012215678901827\",\n\t\"regionId\":\"123456989012345672901439\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST}}/api/muscles",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"muscles"
+							]
+						}
+					},
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
+				{
+					"name": "/muscles/{muscleId}",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST}}/api/muscles/5a89af6178523e2618d4bc88",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"muscles",
+								"5a89af6178523e2618d4bc88"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
