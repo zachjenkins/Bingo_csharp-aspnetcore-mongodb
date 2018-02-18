@@ -13,5 +13,7 @@ namespace Bingo.Services.Contracts
 
         Task<Activation> FindActivation(string exerciseId, string activationId);
         Task<IEnumerable<Activation>> FindActivations(string exerciseId);
+        Task<Activation> CreateActivation(string exerciseId, Activation activationToCreate);
+        Task<Activation> DeleteActivation(string exerciseId, string activationId);
     }
 }

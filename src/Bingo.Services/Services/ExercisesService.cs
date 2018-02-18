@@ -63,15 +63,40 @@ namespace Bingo.Services.Services
             return createdExercise;
         }
 
+        public async Task<Activation> CreateActivation(string exerciseId, Activation activationToCreate)
+        {
+            var exercise = await _exercisesRepository.ReadOneAsync(exerciseId);
+
+            if (exercise == null)
+                return null;
+
+            return await _activationsRepository.CreateOneAsync(activationToCreate);
+        }
+
         #endregion
-        
+
         #region Delete
-        
+
         public async Task<Exercise> DeleteExercise(string id)
         {
             return await _exercisesRepository.DeleteOneAsync(id);
         }
         
+        public async Task<Activation> DeleteActivation(string exerciseId, string activationId)
+        {
+            var exercise = await _exercisesRepository.ReadOneAsync(exerciseId);
+
+            if (exercise == null)
+                return null;
+
+            var result = await _activationsRepository.DeleteOneAsync(activationId);
+
+            if (result == null)
+                return new Activation();
+
+            return result;
+        }
+
         #endregion
     }
 }

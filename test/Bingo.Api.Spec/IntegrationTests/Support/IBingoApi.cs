@@ -43,8 +43,14 @@ namespace Bingo.Specification.IntegrationTests.Support
         [Post("api/exercises")]
         Task<Response<Exercise>> PostExercise([Body] PostExerciseDto postDto);
 
+        [Post("api/exercises/{exerciseId}/activations")]
+        Task<Response<Activation>> PostActivationToExercise([Path] string exerciseId, [Body] PostActivationDto postDto);
+
         [Delete("api/exercises/{exerciseId}")]
         Task<Response<string>> DeleteExerciseById([Path] string exerciseId);
+
+        [Delete("api/exercises/{exerciseId}/activations/{activationId}")]
+        Task<Response<string>> DeleteActivationFromExercise([Path] string exerciseId, [Path] string activationId);
 
         #endregion
 

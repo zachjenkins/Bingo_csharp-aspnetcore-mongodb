@@ -1,4 +1,4 @@
-using Bingo.Api.Models;
+using Bingo.Api.Models.Activations;
 using Bingo.Repository.Entities;
 using Bingo.Specification.Helpers;
 using Shouldly;

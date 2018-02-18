@@ -1,8 +1,7 @@
 ﻿using Bingo.Repository.Entities;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
-namespace Bingo.Api.Models
+namespace Bingo.Api.Models.Activations
 {
     public class PostRepetitionTempoDto
     {

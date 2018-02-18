@@ -1,7 +1,7 @@
 ﻿using Bingo.Repository.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace Bingo.Api.Models
+namespace Bingo.Api.Models.Activations
 {
     public class PostLactateResultDto : RequestObject
     {

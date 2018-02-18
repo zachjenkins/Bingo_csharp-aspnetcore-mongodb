@@ -8,7 +8,7 @@ namespace Bingo.Services.Contracts
     {
         Task<Activation> ReadOneAsync(string id);
         Task<IEnumerable<Activation>> ReadAllAsync();
-        Task<Activation> CreateOneAsync(Activation ActivationToCreate);
+        Task<Activation> CreateOneAsync(Activation activationToCreate);
         Task<Activation> DeleteOneAsync(string id);
     }
 }
