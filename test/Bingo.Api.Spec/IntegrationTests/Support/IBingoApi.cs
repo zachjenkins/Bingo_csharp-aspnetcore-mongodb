@@ -49,6 +49,9 @@ namespace Bingo.Specification.IntegrationTests.Support
         [Delete("api/exercises/{exerciseId}")]
         Task<Response<string>> DeleteExerciseById([Path] string exerciseId);
 
+        [Delete("api/exercises/{exerciseId}/activations/{activationId}")]
+        Task<Response<string>> DeleteActivationFromExercise([Path] string exerciseId, [Path] string activationId);
+
         #endregion
 
         #region Muscles Controller

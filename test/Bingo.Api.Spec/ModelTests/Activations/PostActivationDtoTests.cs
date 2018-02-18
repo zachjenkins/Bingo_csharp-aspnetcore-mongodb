@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Xunit;
 
-namespace Bingo.Specification.ModelTests
+namespace Bingo.Specification.ModelTests.Activations
 {
     [Trait("Api", nameof(PostActivationDtoTests))]
     public class PostActivationDtoTests

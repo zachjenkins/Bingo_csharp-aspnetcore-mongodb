@@ -123,6 +123,19 @@ namespace Bingo.Api.Controllers
             
             return NoContent();
         }
+
+        [HttpDelete("{exerciseId}/activations/{activationId}", Name = "Delete Activation from Exercise")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteActivationFromExercise(string exerciseId, string activationId)
+        {
+            var result = await _exercisesService.DeleteActivation(exerciseId, activationId);
+
+            if (result == null)
+                return NotFound();
+
+            return NoContent();
+        }
         
         #endregion
     }

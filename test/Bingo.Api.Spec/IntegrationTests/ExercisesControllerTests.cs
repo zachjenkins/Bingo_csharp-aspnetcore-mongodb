@@ -122,5 +122,25 @@ namespace Bingo.Specification.IntegrationTests
                     () => _service.ExercisesCollection.ShouldNotBeEmpty()
                 );
         }
+
+        [Fact]
+        public async void DeleteActivationFromExercise_ByIds_ReturnsNoData204()
+        {
+            var exercise = Exercises.RandomizedExercise;
+            var activationToDelete = Activations.RandomizedActivation;
+            activationToDelete.ExerciseId = exercise.Id;
+            _service.ExercisesCollection.InsertOne(exercise);
+            _service.ActivationsCollection.InsertOne(activationToDelete);
+
+            var response = await _service.Api.DeleteActivationFromExercise(exercise.Id, activationToDelete.Id);
+
+            this.ShouldSatisfyAllConditions(
+                    () => response.ResponseMessage.StatusCode.ShouldBe(HttpStatusCode.NoContent),
+                    () => response.StringContent.ShouldBeEmpty(),
+                    () => _service.ExercisesCollection.ShouldContain(exercise),
+                    () => _service.ActivationsCollection.ShouldNotBeEmpty(),
+                    () => _service.ActivationsCollection.ShouldNotContain(activationToDelete)
+                );
+        }
     }
 }

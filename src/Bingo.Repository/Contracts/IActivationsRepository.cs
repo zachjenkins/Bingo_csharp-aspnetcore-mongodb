@@ -9,7 +9,7 @@ namespace Bingo.Repository.Contracts
         Task<Activation> ReadOneAsync(string id);
         Task<IEnumerable<Activation>> ReadManyAsync(string exerciseId);
         Task<IEnumerable<Activation>> ReadAllAsync();
-        Task<Activation> CreateOneAsync(Activation Activation);
+        Task<Activation> CreateOneAsync(Activation activation);
         Task<Activation> DeleteOneAsync(string id);
     }
 }

@@ -3,7 +3,6 @@ using Bingo.Repository.Entities;
 using Bingo.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -181,9 +180,59 @@ namespace Bingo.Specification.ControllerTests
         }
 
         #endregion
-        
+
+        #region Delete Activation From Exercise
+
+        [Fact]
+        public async void DeleteActivationFromExercise_ReturnsNoContentResult_WhenServiceReturnsDeletedActivation()
+        {
+            // Arrange
+            var deletedActivation = TestData.Activations.ContractActivation;
+            ExercisesServiceMock
+                .Setup(x => x.DeleteActivation(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(deletedActivation);
+
+            // Act
+            var result = await ExercisesController.DeleteActivationFromExercise("ExerciseId", "ActivationId");
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async void DeleteActivationFromExercise_ReturnsNoContentResult_WhenServiceReturnsEmptyActivation()
+        {
+            // Arrange
+            ExercisesServiceMock
+                .Setup(x => x.DeleteActivation(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new Activation());
+
+            // Act
+            var result = await ExercisesController.DeleteActivationFromExercise("ExerciseId", "ActivationId");
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async void DeleteActivationFromExercise_ReturnsNotFoundResult_WhenServiceReturnsNull()
+        {
+            // Arrange
+            ExercisesServiceMock
+                .Setup(x => x.DeleteActivation(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync((Activation)null);
+
+            // Act
+            var result = await ExercisesController.DeleteActivationFromExercise("ExerciseId", "ActivationId");
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        #endregion
+
         #region Get Activation for an Exercise
-    
+
         [Fact]
         public async void GetActivationForExercise_ReturnsOkObjectResult_WhenServiceReturnsActivation()
         {
