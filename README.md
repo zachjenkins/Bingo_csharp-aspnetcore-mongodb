@@ -2,8 +2,8 @@
 
     Bingo!
     
-    Bingo is a RESTful API that provides data about fitness.. and fitness related.. stuff...
-
+    Bingo is a RESTful (not really though) API that provides data about fitness.. and fitness related.. stuff...
+   
 # Tools Used
 
 [Mongo DB](https://docs.mongodb.com/)
@@ -44,4 +44,4 @@ The following things can be done in any order!
 
     From the root of the project >> `dotnet test`
 
-	Framework dependencies such as mongoDb and ASP.NET core are initialized in-memory or managed entirely by the test harness, for the lifetime of the test execution. No setup required.
+	Framework dependencies such as mongoDb and ASP.NET core are initialized in-memory or managed entirely by the test harness, for the lifetime of the test execution. No setup required. -- CORRECTION - This implementation is not actually deploying Mongo in-memory, but instead the test harness is just managing the mongo binaries.. .. ..
