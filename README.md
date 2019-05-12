@@ -2,6 +2,11 @@
 
     Bingo!
     
+    NOTE -
+    ***** The design used in this "service" is really only good for CRUD applications with very little complexity or business logic. *
+    
+    ***** This is meant to be a basic implemenation guide for Mongo, unit testing, integration testing, etc..
+    
     Bingo is a RESTful (not really though) API that provides data about fitness.. and fitness related.. stuff...
    
 # Tools Used
